@@ -866,7 +866,10 @@ function completeStage() {
   // Load the YouTube embed for this stage's song
   if (stage.youtubeUrl) {
     const embed = $('#playlistEmbed');
-    if (embed) embed.src = stage.youtubeUrl;
+    if (embed) {
+      embed.src = stage.youtubeUrl;
+      togglePlay(true);
+    }
   }
   $('#winIcon').textContent = stage.symbol;
   $('#winTitle').innerHTML = activeStage === stages.length - 1 ? 'You made it to the <i>long outro.</i>' : 'That felt like a <i>good sign.</i>';
@@ -997,7 +1000,11 @@ function changeTrack(offset) {
   // Load the YouTube song for this stage
   if (next.youtubeUrl) {
     const embed = $('#playlistEmbed');
-    if (embed) embed.src = next.youtubeUrl;
+    if (embed) {
+      embed.src = next.youtubeUrl;
+      state.playing = true;
+      document.querySelectorAll('.player-dock').forEach(dock => dock.classList.toggle('is-playing', state.playing));
+    }
   }
   showToast(`Now playing: ${next.song} · ${next.artist}`);
 }
@@ -1038,7 +1045,10 @@ function handleAction(action) {
     activeAudioEngine = 'youtube';
     if (stage.youtubeUrl) {
       const embed = $('#playlistEmbed');
-      if (embed) embed.src = stage.youtubeUrl;
+      if (embed) {
+        embed.src = stage.youtubeUrl;
+        togglePlay(true);
+      }
     }
     renderPlaybackSource();
     showModal('roomModal');
@@ -1050,14 +1060,17 @@ function handleAction(action) {
     activeAudioEngine = 'youtube';
     if (stage.youtubeUrl) {
       const embed = $('#playlistEmbed');
-      if (embed) embed.src = stage.youtubeUrl;
+      if (embed) {
+        embed.src = stage.youtubeUrl;
+        togglePlay(true);
+      }
     }
     renderPlaybackSource();
     showModal('roomModal');
     showToast(`Playing "${stage.song}" by ${stage.artist}`);
   }
-  else if (action === 'embed-play') { playActiveMedia(); }
-  else if (action === 'embed-pause') { pauseActiveMedia(); }
+  else if (action === 'embed-play') { togglePlay(true); }
+  else if (action === 'embed-pause') { togglePlay(false); }
   else if (action === 'reset') resetStory();
 }
 

@@ -659,7 +659,10 @@ body::before {
 }
 
 .modal-layer[hidden] {
-  display: none;
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  z-index: -100;
 }
 
 .modal {
