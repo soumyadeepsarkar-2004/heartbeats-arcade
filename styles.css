@@ -1651,8 +1651,117 @@ body::before {
   50% { transform: rotate(8deg) scale(1.03); }
 }
 
+/* ─── Mobile: Tablets & small laptops ─── */
 @media (max-width: 768px) {
   .room-layout { grid-template-columns: 1fr; }
-  .modal { padding: 20px; width: 96vw; }
+  .modal { padding: 20px; width: 96vw; max-height: 90dvh; }
   .soundtrack-card { flex-direction: column; align-items: flex-start; }
+  .hero h1, .modal h2 { font-size: clamp(36px, 8vw, 64px); }
+  .mood-row { flex-direction: column; align-items: flex-start; gap: 12px; }
+  .mood-options { flex-wrap: wrap; }
+  .level-grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 12px; }
+  .player-dock {
+    width: calc(100vw - 20px);
+    min-height: 80px;
+    padding: 10px 14px 10px 10px;
+    border-radius: 18px;
+    bottom: 12px;
+    gap: 8px 12px;
+  }
+  .cover-art { width: 52px; height: 52px; border-radius: 10px; }
+  .player-dock { grid-template-columns: 52px minmax(0, 1fr) auto; }
+  .track-details h2 { font-size: 13px; }
+  .track-details p:last-child { font-size: 9px; }
+  .play-button { width: 38px; height: 38px; }
+  .play-button svg { width: 16px; }
+  .skip-button { font-size: 12px; }
+  .track-progress { grid-column: 1 / -1; }
+  .track-progress input::-webkit-slider-thumb { width: 14px; height: 14px; }
+  .toast { bottom: 108px; font-size: 10px; padding: 8px 14px; }
+  .app-shell { padding: 16px clamp(12px, 3vw, 24px) 100px; }
+  .embed-wrap { min-height: 180px; }
+  .diary-list { max-height: 200px; }
+  .room-heading { flex-direction: column; gap: 10px; }
+  .room-heading h2 { font-size: clamp(28px, 6vw, 42px); }
+}
+
+/* ─── Mobile: Phones ─── */
+@media (max-width: 480px) {
+  .modal { padding: 16px; width: 98vw; border-radius: 18px; }
+  .tape-sticker { display: none; }
+  .hero { padding: 4vh 0 10vh; }
+  .hero-copy { font-size: 13px; width: min(300px, 92%); }
+  .hero-actions { gap: 12px; }
+  .primary-button { min-height: 42px; padding: 0 16px; font-size: 10px; }
+  .player-dock {
+    width: calc(100vw - 12px);
+    min-height: 72px;
+    padding: 8px 10px;
+    border-radius: 16px;
+    bottom: 8px;
+    gap: 6px 10px;
+  }
+  .cover-art { width: 44px; height: 44px; border-radius: 8px; }
+  .player-dock { grid-template-columns: 44px minmax(0, 1fr) auto; }
+  .cover-label { font-size: 6px; left: 4px; top: 4px; }
+  .cover-heart { font-size: 14px; right: 4px; top: 3px; }
+  .cover-name { font-size: 6px; left: 4px; bottom: 4px; width: 32px; }
+  .track-details h2 { font-size: 12px; }
+  .now-playing-text { font-size: 8px; }
+  .source-badge { font-size: 7px; padding: 1px 5px; }
+  .play-button { width: 34px; height: 34px; }
+  .play-button svg { width: 14px; }
+  .skip-button { width: 22px; height: 26px; font-size: 11px; }
+  .room-dock-button { min-height: 26px; padding: 0 8px; font-size: 8px; }
+  .track-progress input { height: 3px; }
+  .track-progress input::-webkit-slider-thumb { width: 16px; height: 16px; }
+  .track-progress div { font-size: 8px; }
+  .toast { bottom: 90px; font-size: 9px; padding: 7px 12px; max-width: calc(100vw - 32px); }
+  .app-shell { padding: 12px 10px 88px; }
+  .level-grid { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .level-card { min-height: 150px; padding: 12px 14px 14px; border-radius: 14px; }
+  .level-card h3 { font-size: 15px; }
+  .card-symbol { font-size: 22px; margin: 8px 0 6px; }
+  .map-meta { flex-direction: column; gap: 4px; font-size: 9px; }
+  .map-footer { flex-direction: column; gap: 8px; align-items: flex-start; font-size: 9px; }
+  .game-meta { font-size: 9px; gap: 8px; }
+  .game-visual { height: 90px; }
+  .game-symbol { font-size: 32px; }
+  .choice { padding: 11px 14px !important; gap: 10px !important; }
+  .choice-letter { width: 26px !important; height: 26px !important; font-size: 10px !important; }
+  .choice span { font-size: 12px !important; }
+  .embed-wrap { min-height: 160px; aspect-ratio: 16/10; }
+  .embed-button { width: 28px; height: 28px; font-size: 10px; }
+  .starter-pick { min-width: 90px; padding: 8px 10px; }
+  .starter-pick span { font-size: 7px; }
+  .starter-pick strong { font-size: 10px; }
+  .sync-row { font-size: 9px; flex-wrap: wrap; gap: 8px; }
+  .sync-button { font-size: 9px; padding: 5px 10px; }
+  .diary-entry { padding: 8px 10px; gap: 8px; }
+  .entry-info strong { font-size: 11px; }
+  .entry-info span { font-size: 9px; }
+  .playlist-form label { font-size: 8px; }
+  .url-input-row input { font-size: 10px; padding: 7px 10px; }
+  .playlist-options input { font-size: 9px; }
+  .mood-options button { padding: 5px 10px; font-size: 9px; }
+  .room-intro { font-size: 12px; }
+  .room-stage { font-size: 9px; }
+  .room-note { font-size: 9px; }
+  .panel-label { font-size: 9px; }
+  .copy-room { font-size: 9px; }
+  .win-modal h2 { font-size: 28px; }
+  .win-icon { font-size: 36px; }
+  .win-modal p { font-size: 12px; }
+  .confetti { font-size: 18px; }
+  .unlocked-track { padding: 10px; gap: 10px; }
+  .mini-cover { width: 36px; height: 36px; border-radius: 6px; font-size: 14px; }
+  .unlocked-track strong { font-size: 12px; }
+  .listening-panel, .diary-panel { padding: 14px; border-radius: 14px; }
+  .partner-picker { flex-wrap: wrap; gap: 6px; }
+  .diary-filters { gap: 3px; }
+  .filter-chip { padding: 2px 6px; font-size: 8px; }
+  .room-id { padding: 4px 10px; font-size: 8px; }
+  .game-close { top: 16px; right: 16px; }
+  .close-button { width: 30px; height: 30px; font-size: 16px; }
+  .eyebrow, .modal-overline { font-size: 9px; letter-spacing: .12em; }
 }

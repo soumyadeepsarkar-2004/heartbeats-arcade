@@ -6,17 +6,17 @@ const stages = [
     tag: 'the first reply',
     symbol: '…',
     color: '#ff8e78',
-    song: 'Typing...',
-    artist: 'the first-reply club',
-    duration: 102,
+    song: 'Pehle Bhi Main',
+    artist: 'Vishal Mishra',
+    duration: 262,
     bpm: 92,
     description: 'A small spark, a very big screen, and the first message waiting to be sent.',
     prompt: 'Pick the energy for your opening line.',
     choices: ['A joke with zero pressure', 'A song link after midnight', 'A very brave "hey :)"'],
     win: 'You pressed send. The universe did a tiny little cartwheel.',
-    spotifyTrackId: '6Wr8VZ4MX7i9iCRz2V8iBP',
-    spotifyPlaylistId: '37i9dQZF1DX5q67ZpWyRrZ',
-    youtubeTrackId: '5rOS2Pdy0o4'
+    youtubeTrackId: '6RxJCCHVY_U',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/6RxJCCHVY_U?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DX5q67ZpWyRrZ'
   },
   {
     id: 'closer',
@@ -25,17 +25,17 @@ const stages = [
     tag: 'the easy laugh',
     symbol: '↗',
     color: '#ffc25b',
-    song: 'Two Truths & a Voice Note',
-    artist: 'soft launch society',
-    duration: 118,
+    song: 'Sunflower',
+    artist: 'Post Malone, Swae Lee',
+    duration: 158,
     bpm: 102,
     description: 'The chat gets longer. The jokes get specific. Your playlist starts having witnesses.',
     prompt: 'Choose your accidental intimacy moment.',
     choices: ['The 2 a.m. "still awake?"', 'Sharing a niche childhood photo', 'A walk that takes the long way home'],
     win: 'Somehow, the conversation grew a porch light and stayed on.',
-    spotifyTrackId: '2gAKyzcfFIlMYdJ2b836At',
-    spotifyPlaylistId: '37i9dQZF1DX4WYAVz2EC21',
-    youtubeTrackId: 'sX9HIOBwAJc'
+    youtubeTrackId: 'ApXoWvfEYVU',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/ApXoWvfEYVU?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DX4WYAVz2EC21'
   },
   {
     id: 'crush',
@@ -44,17 +44,17 @@ const stages = [
     tag: 'butterfly FM',
     symbol: '♥',
     color: '#ff5e96',
-    song: 'Seen at 1:17',
-    artist: 'butterfly FM',
-    duration: 126,
+    song: 'Tum Hi Ho',
+    artist: 'Arijit Singh',
+    duration: 261,
     bpm: 116,
     description: 'You have a favorite photo of them and it is absolutely not a big deal. Okay, maybe a little.',
     prompt: 'Pick the tell that gives you away.',
     choices: ['Their name makes you sit up', 'You save a meme just for them', 'Every lyric gets suspiciously specific'],
     win: 'You’re glowing. Your friends noticed three songs ago.',
-    spotifyTrackId: '6rPO02ozF3bM7NnOV4h6s2',
-    spotifyPlaylistId: '37i9dQZF1DXa6iPZDThhLh',
-    youtubeTrackId: '9C4u3G9G8xM'
+    youtubeTrackId: 'Umqb9KENgmk',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/Umqb9KENgmk?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DXa6iPZDThhLh'
   },
   {
     id: 'falling',
@@ -63,17 +63,17 @@ const stages = [
     tag: 'the big maybe',
     symbol: '♡',
     color: '#a895ff',
-    song: 'Gravity, Actually',
-    artist: 'the slow dance dept.',
-    duration: 138,
+    song: 'Perfect',
+    artist: 'Ed Sheeran',
+    duration: 263,
     bpm: 84,
     description: 'There is no cool way to say it: you are falling. Luckily, the landing looks soft.',
     prompt: 'Choose the proof that it is real.',
     choices: ['They know your comfort order', 'Silence feels like a good room', 'Their good news feels like yours'],
     win: 'The ground moved a little. You did not mind.',
-    spotifyTrackId: '2xLMifQCjDGFmkHF5TqB0A',
-    spotifyPlaylistId: '37i9dQZF1DWZ059d0vLwW5',
-    youtubeTrackId: '6rPfX3L3K8k'
+    youtubeTrackId: '2Vv-BfVoq4g',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/2Vv-BfVoq4g?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DWZ059d0vLwW5'
   },
   {
     id: 'inlove',
@@ -82,17 +82,17 @@ const stages = [
     tag: 'sunday repeat',
     symbol: '∞',
     color: '#70d4bd',
-    song: 'Sunday on Repeat',
-    artist: 'kitchen disco',
-    duration: 156,
+    song: 'Raataan Lambiyan',
+    artist: 'Jubin Nautiyal',
+    duration: 237,
     bpm: 100,
     description: 'The everyday stuff starts sounding like a favorite chorus.',
     prompt: 'Choose your ordinary magic.',
     choices: ['Dancing while dinner burns', 'The grocery list handwriting', 'A nap that becomes a whole plan'],
     win: 'Turns out devotion wears socks and steals the blanket.',
-    spotifyTrackId: '1D6F5F8H5J1J5H9F3F7K2L',
-    spotifyPlaylistId: '37i9dQZF1DWWQRwui0ExPn',
-    youtubeTrackId: '4rR3y3K3J0w'
+    youtubeTrackId: 'gJXDByFMI0g',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/gJXDByFMI0g?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DWWQRwui0ExPn'
   },
   {
     id: 'deepcut',
@@ -101,17 +101,17 @@ const stages = [
     tag: 'the honest part',
     symbol: '≈',
     color: '#79b4ff',
-    song: 'Room for the Real',
-    artist: 'after the party',
-    duration: 171,
+    song: 'Channa Mereya',
+    artist: 'Arijit Singh',
+    duration: 289,
     bpm: 76,
     description: 'Not every song is a bop. The brave ones make room for the messy verses too.',
     prompt: 'Choose the kindest way through a hard day.',
     choices: ['Ask, then really listen', 'Take a breather without leaving', 'Repair it with words and snacks'],
     win: 'You made room for the whole song — even the quiet bridge.',
-    spotifyTrackId: '3Q8F5H1J3K5L7M9N2F4R6T',
-    spotifyPlaylistId: '37i9dQZF1DX6V1fKi28wOI',
-    youtubeTrackId: '3V2W8X9Y0Z1'
+    youtubeTrackId: '284Ov7yGfz0',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/284Ov7yGfz0?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DX6V1fKi28wOI'
   },
   {
     id: 'forever',
@@ -120,17 +120,17 @@ const stages = [
     tag: 'keep playing',
     symbol: '✦',
     color: '#d7ff72',
-    song: 'A Very Long Outro',
-    artist: 'you two, forever maybe',
-    duration: 188,
+    song: 'Kal Ho Naa Ho',
+    artist: 'Sonu Nigam',
+    duration: 332,
     bpm: 96,
     description: 'A future made from little rituals, recurring jokes, and choosing each other out loud.',
     prompt: 'Pick the promise worth keeping.',
     choices: ['Keep being curious', 'Make room for both dreams', 'Never stop making the playlist'],
     win: 'Final track unlocked. Good news: there is always another side.',
-    spotifyTrackId: '0VjIjWngHVL5R3HGLr3HUL',
-    spotifyPlaylistId: '37i9dQZF1DXbT5kSmcDj1v',
-    youtubeTrackId: '4uLU6hMCjMI'
+    youtubeTrackId: 'g0eO74UmRBs',
+    youtubeUrl: 'https://www.youtube-nocookie.com/embed/g0eO74UmRBs?autoplay=1&enablejsapi=1',
+    spotifyPlaylistId: '37i9dQZF1DXbT5kSmcDj1v'
   }
 ];
 
@@ -291,7 +291,7 @@ const moodMeta = { soft: { symbol: '♡', color: '#ff9a82' }, electric: { symbol
 
 let state = { completed: [], current: 0, selected: null, playing: false, muted: false, progress: 18 };
 let roomState = { entries: [], selected: '', mood: null, roomCode: 'm-08', selectionMode: 'auto', filterPerson: 'all' };
-let playbackSource = { kind: 'stage', stageId: stages[0].id, playlistId: 'starter-indie' };
+let playbackContext = { type: 'story', currentId: stages[0].id };
 let activeStage = 0;
 let audioContext;
 let beatTimer;
@@ -333,9 +333,11 @@ function loadRoom() {
   } catch { localStorage.removeItem(roomStorageKey); }
   if (sharedRoom && Array.isArray(sharedRoom.entries)) roomState = { ...roomState, ...sharedRoom, roomCode: sharedRoom.roomCode || makeRoomCode() };
   if (!roomState.roomCode) roomState.roomCode = makeRoomCode();
-  playbackSource = roomState.selectionMode === 'manual' && roomState.selected
-    ? { kind: 'playlist', playlistId: roomState.selected }
-    : { kind: 'stage', stageId: stageAt(activeStage).id, playlistId: recommendedRoomPlaylistId(activeStage) };
+  if (roomState.selectionMode === 'manual' && roomState.selected) {
+    playbackContext = { type: 'room', currentId: roomState.selected };
+  } else {
+    playbackContext = { type: 'story', currentId: stageAt(activeStage).id };
+  }
 }
 
 function saveRoom(updateLink = false) {
@@ -381,7 +383,6 @@ function resolvePlaylist(id) {
 }
 
 function buildStageSource(stage) {
-  const playlist = playlistForStage(stage.id);
   return {
     kind: 'stage',
     stageId: stage.id,
@@ -390,13 +391,9 @@ function buildStageSource(stage) {
     duration: stage.duration,
     bpm: stage.bpm,
     color: stage.color,
-    embedUrl: playlist.embedUrl,
-    spotifyUri: playlist.spotifyUri,
-    trackUri: playlist.trackUri,
-    playlistTitle: playlist.title,
-    playlistProvider: playlist.provider,
-    playlistTag: playlist.tag,
-    sourceLabel: `${playlist.provider} · ${playlist.tag}`,
+    embedUrl: stage.youtubeUrl || null,
+    provider: 'YouTube',
+    sourceLabel: `YouTube · ${stage.phase}`,
   };
 }
 
@@ -412,15 +409,17 @@ function buildPlaylistSource(playlist) {
     color: playlist.color || currentStage.color,
     embedUrl: playlist.embedUrl,
     spotifyUri: playlist.spotifyUri || null,
-    playlistTitle: playlist.title,
-    playlistProvider: playlist.provider,
-    playlistTag: playlist.tag,
+    provider: playlist.provider,
     sourceLabel: `${playlist.provider} · shared room`,
   };
 }
 
 function currentTempoSource() {
-  return playbackSource.kind === 'playlist' ? buildPlaylistSource(resolvePlaylist(playbackSource.playlistId)) : buildStageSource(stageAt(activeStage));
+  if (playbackContext.type === 'room') {
+    return buildPlaylistSource(resolvePlaylist(playbackContext.currentId));
+  }
+  const stage = stages.find(s => s.id === playbackContext.currentId) || stageAt(activeStage);
+  return buildStageSource(stage);
 }
 
 function renderPlaybackSource() {
@@ -430,10 +429,10 @@ function renderPlaybackSource() {
   $('.cover-name').textContent = source.title.toLowerCase();
   
   const nowText = $('#nowPlaying');
-  if (nowText) nowText.textContent = source.kind === 'stage' ? `${stageAt(activeStage).phase}` : 'SHARED ROOM PLAYLIST';
+  if (nowText) nowText.textContent = playbackContext.type === 'story' ? `STORY · ${stageAt(activeStage).phase}` : 'SHARED ROOM PLAYLIST';
   
   const badge = $('#sourceBadge');
-  if (badge) badge.textContent = source.playlistProvider ? `${source.playlistProvider}` : (activeAudioEngine === 'spotify' ? 'Spotify iFrame' : activeAudioEngine === 'youtube' ? 'YouTube' : 'Music Embed');
+  if (badge) badge.textContent = source.provider || (activeAudioEngine === 'youtube' ? 'YouTube' : 'Music Embed');
   
   $('#coverArt')?.style.setProperty('--stage', source.color);
   updateProgressUI();
@@ -496,7 +495,7 @@ function applyRoomSelection(playlist, mode = 'manual') {
   if (!playlist) return;
   roomState.selected = playlist.id;
   roomState.selectionMode = mode;
-  playbackSource = buildPlaylistSource(playlist);
+  playbackContext = { type: 'room', currentId: playlist.id };
   
   if (playlist.spotifyUri && spotifyEmbedController) {
     activeAudioEngine = 'spotify';
@@ -518,7 +517,6 @@ function syncRoomFromStage(stageIndex = activeStage) {
   const playlist = resolvePlaylist(recommendedRoomPlaylistId(stageIndex));
   roomState.selected = playlist.id;
   roomState.selectionMode = 'auto';
-  playbackSource = buildStageSource(stageAt(stageIndex));
   saveRoom(false);
   renderRoom();
 }
@@ -788,7 +786,7 @@ function updatePlayer(stage = stageAt(activeStage), reset = false) {
   if (activeStage < 0) activeStage = 0;
   if (reset) state.progress = 0;
   setStageColor(stage);
-  playbackSource = { kind: 'stage', stageId: stage.id, playlistId: playlistForStage(stage.id).id };
+  playbackContext = { type: 'story', currentId: stage.id };
   renderPlaybackSource();
   syncRoomFromStage(activeStage);
 }
@@ -859,7 +857,17 @@ function completeStage() {
     renderProgress();
     renderMap();
   }
-  updatePlayer(stage, true);
+  // Switch to story context and auto-play the stage's YouTube song
+  playbackContext = { type: 'story', currentId: stage.id };
+  activeAudioEngine = 'youtube';
+  setStageColor(stage);
+  state.progress = 0;
+  renderPlaybackSource();
+  // Load the YouTube embed for this stage's song
+  if (stage.youtubeUrl) {
+    const embed = $('#playlistEmbed');
+    if (embed) embed.src = stage.youtubeUrl;
+  }
   $('#winIcon').textContent = stage.symbol;
   $('#winTitle').innerHTML = activeStage === stages.length - 1 ? 'You made it to the <i>long outro.</i>' : 'That felt like a <i>good sign.</i>';
   $('#winText').textContent = stage.win;
@@ -965,19 +973,33 @@ function togglePlay() {
 }
 
 function changeTrack(offset) {
-  if (playbackSource.kind === 'playlist') {
+  if (playbackContext.type === 'room') {
+    // Room context: cycle through room library only
     const available = roomLibrary();
-    const now = available.findIndex((playlist) => playlist.id === playbackSource.playlistId);
+    const now = available.findIndex((playlist) => playlist.id === playbackContext.currentId);
     const next = available[(now + offset + available.length) % available.length];
     if (next) applyRoomSelection(next, roomState.selectionMode);
-    showToast(`Now previewing: ${next.title}`);
+    showToast(`Now playing: ${next.title}`);
     return;
   }
-  const available = stages;
-  const now = available.findIndex((stage) => stage.id === stageAt(activeStage).id);
-  const next = available[(now + offset + available.length) % available.length];
-  updatePlayer(next, true);
-  showToast(`Now previewing stage: ${next.name}`);
+  // Story context: cycle through UNLOCKED stages only
+  const unlocked = stages.filter((s, i) => isUnlocked(i));
+  if (unlocked.length === 0) return;
+  const currentIdx = unlocked.findIndex((s) => s.id === playbackContext.currentId);
+  const nextIdx = (currentIdx + offset + unlocked.length) % unlocked.length;
+  const next = unlocked[nextIdx];
+  playbackContext = { type: 'story', currentId: next.id };
+  activeStage = stages.indexOf(next);
+  activeAudioEngine = 'youtube';
+  setStageColor(next);
+  state.progress = 0;
+  renderPlaybackSource();
+  // Load the YouTube song for this stage
+  if (next.youtubeUrl) {
+    const embed = $('#playlistEmbed');
+    if (embed) embed.src = next.youtubeUrl;
+  }
+  showToast(`Now playing: ${next.song} · ${next.artist}`);
 }
 
 function toggleMute() {
@@ -991,7 +1013,13 @@ function toggleMute() {
 }
 
 function handleAction(action) {
-  if (action === 'open-room') { renderRoom(); showModal('roomModal'); }
+  if (action === 'open-room') {
+    // Switch context to room when clicking the Room button on the dock
+    playbackContext = { type: 'room', currentId: roomState.selected || recommendedRoomPlaylistId(activeStage) };
+    renderPlaybackSource();
+    renderRoom();
+    showModal('roomModal');
+  }
   else if (action === 'open-map') { renderMap(); showModal('mapModal'); }
   else if (action === 'open-current') openGame(state.current);
   else if (action === 'close-modal') closeModals();
@@ -1006,18 +1034,27 @@ function handleAction(action) {
   else if (action === 'sync-countdown') syncCountdown();
   else if (action === 'load-current-track') {
     const stage = stageAt(activeStage);
-    const uri = stage.spotifyTrackId ? `spotify:track:${stage.spotifyTrackId}` : `spotify:playlist:${stage.spotifyPlaylistId}`;
-    loadUriIntoSpotifyEmbed(uri, stage.song, stage.artist, stage.color);
+    playbackContext = { type: 'story', currentId: stage.id };
+    activeAudioEngine = 'youtube';
+    if (stage.youtubeUrl) {
+      const embed = $('#playlistEmbed');
+      if (embed) embed.src = stage.youtubeUrl;
+    }
+    renderPlaybackSource();
     showModal('roomModal');
-    showToast(`Loaded "${stage.song}" into Spotify Embed.`);
+    showToast(`Playing "${stage.song}" by ${stage.artist}`);
   }
   else if (action === 'use-stage-soundtrack') {
     const stage = stageAt(activeStage);
-    const soundtrack = playlistForStage(stage.id);
-    const uri = soundtrack.trackUri || soundtrack.spotifyUri;
-    loadUriIntoSpotifyEmbed(uri, stage.song, soundtrack.title, stage.color);
+    playbackContext = { type: 'story', currentId: stage.id };
+    activeAudioEngine = 'youtube';
+    if (stage.youtubeUrl) {
+      const embed = $('#playlistEmbed');
+      if (embed) embed.src = stage.youtubeUrl;
+    }
+    renderPlaybackSource();
     showModal('roomModal');
-    showToast(`Loaded soundtrack into Spotify Embed.`);
+    showToast(`Playing "${stage.song}" by ${stage.artist}`);
   }
   else if (action === 'embed-play') { playActiveMedia(); }
   else if (action === 'embed-pause') { pauseActiveMedia(); }
