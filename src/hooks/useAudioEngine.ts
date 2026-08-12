@@ -1,4 +1,4 @@
-import { useState, useCallback } from 'react';
+import { useState, useCallback, useEffect } from 'react';
 import type { StageTrack, RoomEntry } from '../types';
 
 export function useAudioEngine() {
@@ -7,23 +7,37 @@ export function useAudioEngine() {
   const [currentTrackTitle, setCurrentTrackTitle] = useState('Pehle Bhi Main');
   const [currentArtist, setCurrentArtist] = useState('Vishal Mishra');
   const [embedUrl, setEmbedUrl] = useState('https://www.youtube-nocookie.com/embed/6RxJCCHVY_U?autoplay=1&enablejsapi=1');
-  const [progress, setProgress] = useState(18);
+  const [progress, setProgress] = useState(15);
+  const [currentTimeSec, setCurrentTimeSec] = useState(24);
+  const [totalDurationSec, setTotalDurationSec] = useState(262);
 
+  // Play a specific stage track (Story Map)
   const playStageTrack = useCallback((stage: StageTrack) => {
     setActiveMode('story');
     setCurrentTrackTitle(stage.song);
     setCurrentArtist(stage.artist);
+    setTotalDurationSec(stage.duration);
+    setCurrentTimeSec(0);
+    setProgress(0);
+    
     if (stage.youtubeUrl) {
       setEmbedUrl(stage.youtubeUrl);
     }
     setIsPlaying(true);
   }, []);
 
+  // Play a room playlist entry (Shared Room)
   const playRoomEntry = useCallback((entry: RoomEntry) => {
     setActiveMode('room');
     setCurrentTrackTitle(entry.title);
     setCurrentArtist(`Shared by ${entry.addedBy}`);
-    setEmbedUrl(entry.embedUrl);
+    setTotalDurationSec(210);
+    setCurrentTimeSec(0);
+    setProgress(0);
+    
+    if (entry.embedUrl) {
+      setEmbedUrl(entry.embedUrl);
+    }
     setIsPlaying(true);
   }, []);
 
@@ -31,23 +45,64 @@ export function useAudioEngine() {
     setIsPlaying(prev => !prev);
   }, []);
 
-  const nextTrack = useCallback((stages: StageTrack[], currentStageId: string) => {
+  // Section-Isolated Next Track Logic
+  const nextTrack = useCallback((stages: StageTrack[], currentStageId: string, roomEntries: RoomEntry[]) => {
     if (activeMode === 'story') {
-      const unlocked = stages.filter(s => s.isUnlocked);
-      const idx = unlocked.findIndex(s => s.id === currentStageId);
-      const nextIdx = (idx + 1) % unlocked.length;
-      playStageTrack(unlocked[nextIdx]);
-    }
-  }, [activeMode, playStageTrack]);
+      // Loop STRICTLY within unlocked Story Map tracks
+      const unlockedStages = stages.filter(s => s.isUnlocked);
+      if (unlockedStages.length === 0) return;
 
-  const prevTrack = useCallback((stages: StageTrack[], currentStageId: string) => {
-    if (activeMode === 'story') {
-      const unlocked = stages.filter(s => s.isUnlocked);
-      const idx = unlocked.findIndex(s => s.id === currentStageId);
-      const prevIdx = (idx - 1 + unlocked.length) % unlocked.length;
-      playStageTrack(unlocked[prevIdx]);
+      const currentIdx = unlockedStages.findIndex(s => s.id === currentStageId);
+      const nextIdx = (currentIdx + 1) % unlockedStages.length;
+      playStageTrack(unlockedStages[nextIdx]);
+    } else {
+      // Loop STRICTLY within Room entries
+      if (roomEntries.length === 0) return;
+      const currentIdx = roomEntries.findIndex(r => r.title === currentTrackTitle);
+      const nextIdx = (currentIdx + 1) % roomEntries.length;
+      playRoomEntry(roomEntries[nextIdx]);
     }
-  }, [activeMode, playStageTrack]);
+  }, [activeMode, currentTrackTitle, playStageTrack, playRoomEntry]);
+
+  // Section-Isolated Previous Track Logic
+  const prevTrack = useCallback((stages: StageTrack[], currentStageId: string, roomEntries: RoomEntry[]) => {
+    if (activeMode === 'story') {
+      // Loop STRICTLY within unlocked Story Map tracks
+      const unlockedStages = stages.filter(s => s.isUnlocked);
+      if (unlockedStages.length === 0) return;
+
+      const currentIdx = unlockedStages.findIndex(s => s.id === currentStageId);
+      const prevIdx = (currentIdx - 1 + unlockedStages.length) % unlockedStages.length;
+      playStageTrack(unlockedStages[prevIdx]);
+    } else {
+      // Loop STRICTLY within Room entries
+      if (roomEntries.length === 0) return;
+      const currentIdx = roomEntries.findIndex(r => r.title === currentTrackTitle);
+      const prevIdx = (currentIdx - 1 + roomEntries.length) % roomEntries.length;
+      playRoomEntry(roomEntries[prevIdx]);
+    }
+  }, [activeMode, currentTrackTitle, playStageTrack, playRoomEntry]);
+
+  // Progress simulation for audio timer
+  useEffect(() => {
+    if (!isPlaying) return;
+    const interval = setInterval(() => {
+      setCurrentTimeSec(prev => {
+        const nextTime = prev + 1;
+        if (nextTime >= totalDurationSec) {
+          return 0;
+        }
+        setProgress(Math.round((nextTime / totalDurationSec) * 100));
+        return nextTime;
+      });
+    }, 1000);
+    return () => clearInterval(interval);
+  }, [isPlaying, totalDurationSec]);
+
+  const seekProgress = useCallback((newProgress: number) => {
+    setProgress(newProgress);
+    setCurrentTimeSec(Math.round((newProgress / 100) * totalDurationSec));
+  }, [totalDurationSec]);
 
   return {
     isPlaying,
@@ -56,12 +111,14 @@ export function useAudioEngine() {
     currentArtist,
     embedUrl,
     progress,
-    setProgress,
+    currentTimeSec,
+    totalDurationSec,
     playStageTrack,
     playRoomEntry,
     togglePlay,
     setActiveMode,
     nextTrack,
-    prevTrack
+    prevTrack,
+    seekProgress
   };
 }

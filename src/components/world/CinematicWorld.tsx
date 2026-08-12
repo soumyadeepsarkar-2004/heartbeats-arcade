@@ -15,39 +15,43 @@ export function CinematicWorld() {
     const video = videoRef.current;
     if (!video) return;
     video.play().catch(() => {
-      // Autoplay may be blocked until user interaction.
+      // Autoplay fallbacks handled gracefully
     });
   }, []);
 
   return (
-    <div className="fixed inset-0 -z-10 overflow-hidden bg-[#080b17]">
+    <div className="fixed inset-0 -z-50 overflow-hidden bg-[#080b17] pointer-events-none select-none">
       <ParallaxController>
         <WorldLighting bass={bass} mid={mid} treble={treble} />
+        
+        {/* Full Viewport 20-Second Ambient Video Loop */}
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover"
-          src="/assets/two-heartbeat-ambient-loop-20s.webm"
+          className="absolute inset-0 h-full w-full object-cover brightness-[1.03] contrast-[1.04]"
           poster="/assets/twilight-cassette-city.png"
           autoPlay
           muted
           loop
           playsInline
-          preload="metadata"
-        />
+          preload="auto"
+        >
+          <source src="/assets/two-heartbeat-ambient-loop-20s.webm" type="video/webm" />
+          <source src="assets/two-heartbeat-ambient-loop-20s.webm" type="video/webm" />
+        </video>
         
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(255,111,150,.08),transparent_35%)]" />
-        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(4,7,20,.05),rgba(4,7,20,.35))]" />
+        {/* Subtle Radial Lighting Overlay */}
+        <div className="absolute inset-0 bg-[radial-gradient(circle_at_70%_40%,rgba(255,122,89,.12),transparent_50%)] pointer-events-none" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_bottom,rgba(16,20,44,.1),rgba(16,20,44,.5))] pointer-events-none" />
         
-        <div className="absolute inset-0 z-0 mix-blend-screen opacity-60">
+        {/* Three.js Ambient Particle Canvas */}
+        <div className="absolute inset-0 z-0 mix-blend-screen opacity-70 pointer-events-none">
           <Canvas camera={{ position: [0, 0, 5], fov: 45 }}>
-            <AmbientParticles count={50} />
+            <AmbientParticles count={40} />
           </Canvas>
         </div>
       </ParallaxController>
       
-      <div className="world-grain absolute inset-0 z-10" />
-      
-      <div className="pointer-events-none absolute inset-0 z-10 shadow-[inset_0_0_180px_rgba(0,0,0,.55)]" />
+      <div className="world-grain absolute inset-0 z-10 pointer-events-none opacity-[0.03]" />
     </div>
   );
 }

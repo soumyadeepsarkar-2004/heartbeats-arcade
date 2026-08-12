@@ -33,13 +33,34 @@ export function App() {
     currentArtist,
     embedUrl,
     progress,
-    setProgress,
+    currentTimeSec,
+    totalDurationSec,
     playStageTrack,
     playRoomEntry,
     togglePlay,
+    setActiveMode,
     nextTrack,
-    prevTrack
+    prevTrack,
+    seekProgress
   } = useAudioEngine();
+
+  const handleCompleteStage = () => {
+    completeStage();
+    // Directly play the unlocked stage track
+    playStageTrack(activeStage);
+  };
+
+  const handleToggleSection = () => {
+    if (activeMode === 'story') {
+      setActiveMode('room');
+      if (roomEntries.length > 0) {
+        playRoomEntry(roomEntries[0]);
+      }
+    } else {
+      setActiveMode('story');
+      playStageTrack(activeStage);
+    }
+  };
 
   return (
     <div className="relative min-h-screen text-ink overflow-x-hidden select-none">
@@ -70,11 +91,16 @@ export function App() {
         isPlaying={isPlaying}
         activeMode={activeMode}
         progress={progress}
+        currentTimeSec={currentTimeSec}
+        totalDurationSec={totalDurationSec}
+        stages={stages}
+        currentStageId={activeStage.id}
+        roomEntries={roomEntries}
         onTogglePlay={togglePlay}
-        onPrev={() => prevTrack(stages, activeStage.id)}
-        onNext={() => nextTrack(stages, activeStage.id)}
-        onOpenRoom={() => setActiveModal('room')}
-        onProgressChange={setProgress}
+        onPrev={() => prevTrack(stages, activeStage.id, roomEntries)}
+        onNext={() => nextTrack(stages, activeStage.id, roomEntries)}
+        onToggleSection={handleToggleSection}
+        onProgressChange={seekProgress}
       />
 
       {/* 1. Story Map Modal */}
@@ -83,7 +109,13 @@ export function App() {
         stages={stages}
         completedCount={completedCount}
         onClose={() => setActiveModal(null)}
-        onSelectStage={openStage}
+        onSelectStage={(id) => {
+          openStage(id);
+          const target = stages.find(s => s.id === id);
+          if (target && target.isUnlocked) {
+            playStageTrack(target);
+          }
+        }}
         onResetStory={resetStory}
       />
 
@@ -94,7 +126,7 @@ export function App() {
         selectedChoice={selectedChoice}
         onClose={() => setActiveModal(null)}
         onSelectChoice={setSelectedChoice}
-        onComplete={completeStage}
+        onComplete={handleCompleteStage}
         onPlaySong={playStageTrack}
       />
 
