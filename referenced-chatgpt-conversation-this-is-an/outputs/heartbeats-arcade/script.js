@@ -253,6 +253,20 @@ function toggleYouTubeEmbedPlayback(play) {
   }
 }
 
+function loadYouTubeUrlAndPlay(url) {
+  const embed = $('#playlistEmbed');
+  if (!embed) return;
+  embed.onload = () => {
+    setTimeout(() => {
+      if (state.playing && activeAudioEngine === 'youtube') {
+        toggleYouTubeEmbedPlayback(true);
+      }
+    }, 500);
+  };
+  embed.src = url;
+  togglePlay(true);
+}
+
 function playActiveMedia() {
   if (activeAudioEngine === 'spotify') {
     if (spotifyEmbedController) {
@@ -865,11 +879,7 @@ function completeStage() {
   renderPlaybackSource();
   // Load the YouTube embed for this stage's song
   if (stage.youtubeUrl) {
-    const embed = $('#playlistEmbed');
-    if (embed) {
-      embed.src = stage.youtubeUrl;
-      togglePlay(true);
-    }
+    loadYouTubeUrlAndPlay(stage.youtubeUrl);
   }
   $('#winIcon').textContent = stage.symbol;
   $('#winTitle').innerHTML = activeStage === stages.length - 1 ? 'You made it to the <i>long outro.</i>' : 'That felt like a <i>good sign.</i>';
@@ -999,12 +1009,7 @@ function changeTrack(offset) {
   renderPlaybackSource();
   // Load the YouTube song for this stage
   if (next.youtubeUrl) {
-    const embed = $('#playlistEmbed');
-    if (embed) {
-      embed.src = next.youtubeUrl;
-      state.playing = true;
-      document.querySelectorAll('.player-dock').forEach(dock => dock.classList.toggle('is-playing', state.playing));
-    }
+    loadYouTubeUrlAndPlay(next.youtubeUrl);
   }
   showToast(`Now playing: ${next.song} · ${next.artist}`);
 }
@@ -1039,31 +1044,12 @@ function handleAction(action) {
   else if (action === 'mute') toggleMute();
   else if (action === 'copy-room') copyRoomLink();
   else if (action === 'sync-countdown') syncCountdown();
-  else if (action === 'load-current-track') {
+  else if (action === 'load-current-track' || action === 'use-stage-soundtrack') {
     const stage = stageAt(activeStage);
     playbackContext = { type: 'story', currentId: stage.id };
     activeAudioEngine = 'youtube';
     if (stage.youtubeUrl) {
-      const embed = $('#playlistEmbed');
-      if (embed) {
-        embed.src = stage.youtubeUrl;
-        togglePlay(true);
-      }
-    }
-    renderPlaybackSource();
-    showModal('roomModal');
-    showToast(`Playing "${stage.song}" by ${stage.artist}`);
-  }
-  else if (action === 'use-stage-soundtrack') {
-    const stage = stageAt(activeStage);
-    playbackContext = { type: 'story', currentId: stage.id };
-    activeAudioEngine = 'youtube';
-    if (stage.youtubeUrl) {
-      const embed = $('#playlistEmbed');
-      if (embed) {
-        embed.src = stage.youtubeUrl;
-        togglePlay(true);
-      }
+      loadYouTubeUrlAndPlay(stage.youtubeUrl);
     }
     renderPlaybackSource();
     showModal('roomModal');

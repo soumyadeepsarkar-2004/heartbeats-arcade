@@ -41,15 +41,6 @@
 
       <button class="room-button" type="button" aria-label="Open the listening room" data-action="open-room"><span
           aria-hidden="true">◌</span> room</button>
-      <button class="sound-toggle icon-button" type="button" aria-label="Toggle mute" data-action="mute" aria-pressed="false">
-        <svg class="sound-icon" viewBox="0 0 24 24" aria-hidden="true">
-          <path d="M3 9v6h4l5 5V4L7 9H3z" />
-        </svg>
-        <svg class="mute-icon" viewBox="0 0 24 24" aria-hidden="true" style="display:none">
-          <path d="M16.5 12c0-1.77-.73-3.37-1.91-4.5l1.42-1.42A8.955 8.955 0 0121 12c0 1.66-.41 3.18-1.12 4.42l1.42 1.42A8.955 8.955 0 0016.5 12z" />
-        </svg>
-        <span class="sound-label">Sound</span>
-      </button>
     </header>
 
     <section class="hero" id="home" aria-labelledby="hero-title">
@@ -220,9 +211,6 @@
           <div class="embed-wrap">
             <iframe id="playlistEmbed" title="Selected streaming playlist" loading="lazy"
               allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
-            <div class="embed-loading" aria-label="Loading player">
-              <div class="spinner"></div>
-            </div>
             <div class="embed-overlay">
               <button class="embed-button embed-play" type="button" data-action="embed-play" aria-label="Play in embed player">▶</button>
               <button class="embed-button embed-pause" type="button" data-action="embed-pause" aria-label="Pause embed player">⏸</button>
@@ -281,6 +269,7 @@
 
   <div class="toast" id="toast" role="status" aria-live="polite"></div>
   <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
   <script src="script.js"></script>
 </body>
 
