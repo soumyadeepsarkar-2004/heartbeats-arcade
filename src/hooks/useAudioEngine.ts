@@ -6,7 +6,7 @@ export function useAudioEngine() {
   const [activeMode, setActiveMode] = useState<'story' | 'room'>('story');
   const [currentTrackTitle, setCurrentTrackTitle] = useState('Pehle Bhi Main');
   const [currentArtist, setCurrentArtist] = useState('Vishal Mishra');
-  const [embedUrl, setEmbedUrl] = useState('https://www.youtube-nocookie.com/embed/6RxJCCHVY_U?autoplay=1&enablejsapi=1');
+  const [embedUrl, setEmbedUrl] = useState('https://www.youtube.com/embed/vFh_63d91n8?autoplay=1&enablejsapi=1');
   const [progress, setProgress] = useState(15);
   const [currentTimeSec, setCurrentTimeSec] = useState(24);
   const [totalDurationSec, setTotalDurationSec] = useState(262);
