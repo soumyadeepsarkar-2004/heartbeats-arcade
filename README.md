@@ -6,7 +6,7 @@
 
 > A minimal shared listening room, relationship story map, and interactive music diary designed for two people to stream music together across the internet.
 
-**Live Web App**: [https://90sheartbeat.netlify.app](https://90sheartbeat.netlify.app)  
+**Live at**: [https://90sheartbeat.netlify.app](https://90sheartbeat.netlify.app)  
 👉 **Backup Mirror**: [https://soumyadeepsarkar-2004.github.io/heartbeats-arcade/](https://soumyadeepsarkar-2004.github.io/heartbeats-arcade/)
 
 ---
