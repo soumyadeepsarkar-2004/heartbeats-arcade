@@ -31,6 +31,45 @@
   }
 }
 
+/* Range Slider Styling - Lime Thumb instead of Browser Default Blue */
+input[type="range"] {
+  -webkit-appearance: none;
+  appearance: none;
+  background: rgba(255, 255, 255, 0.2);
+  border-radius: 9999px;
+  height: 4px;
+}
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #C8FF4F;
+  box-shadow: 0 0 10px rgba(200, 255, 79, 0.7);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease;
+}
+input[type="range"]::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #ffffff;
+}
+input[type="range"]::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: #C8FF4F;
+  box-shadow: 0 0 10px rgba(200, 255, 79, 0.7);
+  cursor: pointer;
+  border: none;
+  transition: transform 0.15s ease;
+}
+input[type="range"]::-moz-range-thumb:hover {
+  transform: scale(1.2);
+  background: #ffffff;
+}
+
 /* Custom Scrollbars */
 ::-webkit-scrollbar {
   width: 5px;
@@ -45,7 +84,7 @@
   border-radius: 8px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: var(--acid);
+  background: #C8FF4F;
 }
 
 .custom-scrollbar::-webkit-scrollbar {
@@ -93,11 +132,11 @@
 
 /* Glass Panels & Modals */
 .heartbeat-panel {
-  background: rgba(17, 19, 47, 0.78);
-  backdrop-filter: blur(18px);
-  -webkit-backdrop-filter: blur(18px);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+  background: rgba(17, 19, 47, 0.85);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.55);
 }
 
 .tape-sticker {
@@ -105,7 +144,7 @@
   color: #fff;
   font-family: 'DM Mono', monospace;
   box-shadow: 0 10px 25px rgba(255, 94, 146, 0.35);
-  transform: rotate(-6deg);
+  transform: rotate(-3deg);
 }
 
 /* Typography Utility */
@@ -122,11 +161,5 @@
   .heartbeat-panel {
     padding: 1rem;
     border-radius: 1.25rem;
-  }
-}
-
-@media (max-width: 480px) {
-  .tape-sticker {
-    display: none !important;
   }
 }
