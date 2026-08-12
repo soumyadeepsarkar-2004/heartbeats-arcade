@@ -4,7 +4,7 @@ import { AmbientParticles } from "./AmbientParticles";
 import { ParallaxController } from "./ParallaxController";
 import { WorldLighting } from "./WorldLighting";
 import { useAudioAnalyser } from "../../hooks/useAudioAnalyser";
-import { useAudioEngine } from "../music/AudioEngine";
+import { useAudioEngine } from "../../hooks/useAudioEngine";
 
 export function CinematicWorld() {
   const videoRef = useRef<HTMLVideoElement>(null);
