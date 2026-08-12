@@ -71,13 +71,13 @@ export function App() {
       {/* Noise Grain Overlay */}
       <div className="noise" />
 
-      {/* Global Audio Stream Embed */}
+      {/* Global Audio Stream Embed (Must NOT be display:none so browsers render audio output) */}
       {isPlaying && embedUrl && (
         <iframe 
           key={embedUrl}
           src={embedUrl}
-          className="hidden pointer-events-none"
-          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          className="fixed bottom-0 left-0 w-1 h-1 opacity-0 pointer-events-none z-[-100]"
+          allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
           aria-hidden="true"
         />
       )}

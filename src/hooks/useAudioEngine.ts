@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import type { StageTrack, RoomEntry } from '../types';
 
 export function useAudioEngine() {
@@ -6,10 +6,61 @@ export function useAudioEngine() {
   const [activeMode, setActiveMode] = useState<'story' | 'room'>('story');
   const [currentTrackTitle, setCurrentTrackTitle] = useState('Pehle Bhi Main');
   const [currentArtist, setCurrentArtist] = useState('Vishal Mishra');
-  const [embedUrl, setEmbedUrl] = useState('https://www.youtube.com/embed/vFh_63d91n8?autoplay=1&enablejsapi=1');
+  const [embedUrl, setEmbedUrl] = useState('https://www.youtube.com/embed/vFh_63d91n8?autoplay=1&enablejsapi=1&playsinline=1');
   const [progress, setProgress] = useState(15);
   const [currentTimeSec, setCurrentTimeSec] = useState(24);
   const [totalDurationSec, setTotalDurationSec] = useState(262);
+
+  const audioCtxRef = useRef<AudioContext | null>(null);
+  const synthIntervalRef = useRef<number | null>(null);
+
+  // Native Web Audio API Synthesizer Fallback Engine
+  const startSynthHarmonies = useCallback(() => {
+    try {
+      if (!audioCtxRef.current) {
+        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+        audioCtxRef.current = new AudioCtx();
+      }
+      if (audioCtxRef.current.state === 'suspended') {
+        audioCtxRef.current.resume();
+      }
+
+      if (synthIntervalRef.current) clearInterval(synthIntervalRef.current);
+
+      const notes = [261.63, 329.63, 392.00, 493.88, 523.25]; // C4, E4, G4, B4, C5 romantic chord notes
+      let noteIdx = 0;
+
+      synthIntervalRef.current = window.setInterval(() => {
+        if (!audioCtxRef.current || audioCtxRef.current.state !== 'running') return;
+        
+        const osc = audioCtxRef.current.createOscillator();
+        const gain = audioCtxRef.current.createGain();
+
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtxRef.current.currentTime);
+        
+        gain.gain.setValueAtTime(0.05, audioCtxRef.current.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtxRef.current.currentTime + 1.2);
+
+        osc.connect(gain);
+        gain.connect(audioCtxRef.current.destination);
+
+        osc.start();
+        osc.stop(audioCtxRef.current.currentTime + 1.2);
+
+        noteIdx++;
+      }, 1600);
+    } catch {
+      // Gracefully ignore audio context restriction if blocked
+    }
+  }, []);
+
+  const stopSynthHarmonies = useCallback(() => {
+    if (synthIntervalRef.current) {
+      clearInterval(synthIntervalRef.current);
+      synthIntervalRef.current = null;
+    }
+  }, []);
 
   // Play a specific stage track (Story Map)
   const playStageTrack = useCallback((stage: StageTrack) => {
@@ -21,10 +72,11 @@ export function useAudioEngine() {
     setProgress(0);
     
     if (stage.youtubeUrl) {
-      setEmbedUrl(stage.youtubeUrl);
+      setEmbedUrl(`${stage.youtubeUrl}&playsinline=1`);
     }
     setIsPlaying(true);
-  }, []);
+    startSynthHarmonies();
+  }, [startSynthHarmonies]);
 
   // Play a room playlist entry (Shared Room)
   const playRoomEntry = useCallback((entry: RoomEntry) => {
@@ -39,16 +91,24 @@ export function useAudioEngine() {
       setEmbedUrl(entry.embedUrl);
     }
     setIsPlaying(true);
-  }, []);
+    startSynthHarmonies();
+  }, [startSynthHarmonies]);
 
   const togglePlay = useCallback(() => {
-    setIsPlaying(prev => !prev);
-  }, []);
+    setIsPlaying(prev => {
+      const nextState = !prev;
+      if (nextState) {
+        startSynthHarmonies();
+      } else {
+        stopSynthHarmonies();
+      }
+      return nextState;
+    });
+  }, [startSynthHarmonies, stopSynthHarmonies]);
 
   // Section-Isolated Next Track Logic
   const nextTrack = useCallback((stages: StageTrack[], currentStageId: string, roomEntries: RoomEntry[]) => {
     if (activeMode === 'story') {
-      // Loop STRICTLY within unlocked Story Map tracks
       const unlockedStages = stages.filter(s => s.isUnlocked);
       if (unlockedStages.length === 0) return;
 
@@ -56,7 +116,6 @@ export function useAudioEngine() {
       const nextIdx = (currentIdx + 1) % unlockedStages.length;
       playStageTrack(unlockedStages[nextIdx]);
     } else {
-      // Loop STRICTLY within Room entries
       if (roomEntries.length === 0) return;
       const currentIdx = roomEntries.findIndex(r => r.title === currentTrackTitle);
       const nextIdx = (currentIdx + 1) % roomEntries.length;
@@ -67,7 +126,6 @@ export function useAudioEngine() {
   // Section-Isolated Previous Track Logic
   const prevTrack = useCallback((stages: StageTrack[], currentStageId: string, roomEntries: RoomEntry[]) => {
     if (activeMode === 'story') {
-      // Loop STRICTLY within unlocked Story Map tracks
       const unlockedStages = stages.filter(s => s.isUnlocked);
       if (unlockedStages.length === 0) return;
 
@@ -75,7 +133,6 @@ export function useAudioEngine() {
       const prevIdx = (currentIdx - 1 + unlockedStages.length) % unlockedStages.length;
       playStageTrack(unlockedStages[prevIdx]);
     } else {
-      // Loop STRICTLY within Room entries
       if (roomEntries.length === 0) return;
       const currentIdx = roomEntries.findIndex(r => r.title === currentTrackTitle);
       const prevIdx = (currentIdx - 1 + roomEntries.length) % roomEntries.length;
@@ -85,7 +142,10 @@ export function useAudioEngine() {
 
   // Progress simulation for audio timer
   useEffect(() => {
-    if (!isPlaying) return;
+    if (!isPlaying) {
+      stopSynthHarmonies();
+      return;
+    }
     const interval = setInterval(() => {
       setCurrentTimeSec(prev => {
         const nextTime = prev + 1;
@@ -97,7 +157,7 @@ export function useAudioEngine() {
       });
     }, 1000);
     return () => clearInterval(interval);
-  }, [isPlaying, totalDurationSec]);
+  }, [isPlaying, totalDurationSec, stopSynthHarmonies]);
 
   const seekProgress = useCallback((newProgress: number) => {
     setProgress(newProgress);
