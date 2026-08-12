@@ -71,5 +71,5 @@ Open `http://localhost:8000/` in your browser.
 
 ## 📄 License
 
-MIT License © 2026 
+MIT License © 2026 |
 Maintainer : [soumyadeepsarkar-2004](https://github.com/soumyadeepsarkar-2004)
