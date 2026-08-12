@@ -50,7 +50,31 @@ body {
   min-height: 100vh;
   margin: 0;
   overflow-x: hidden;
-  background: #141939 url('assets/twilight-cassette-city.png') center/cover fixed no-repeat;
+  background: #141939;
+}
+
+.cinematic-bg-container {
+  position: fixed;
+  inset: 0;
+  z-index: -10;
+  overflow: hidden;
+  pointer-events: none;
+}
+
+.cinematic-bg-video {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  opacity: 0.9;
+}
+
+.cinematic-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 70% 40%, rgba(255, 122, 89, 0.15), transparent 50%),
+              linear-gradient(to bottom, rgba(16, 20, 44, 0.2), rgba(16, 20, 44, 0.65));
 }
 
 button,
