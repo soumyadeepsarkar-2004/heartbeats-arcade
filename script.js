@@ -245,6 +245,42 @@ function postMessageToEmbed(message) {
   }
 }
 
+function toggleYouTubeEmbedPlayback(play) {
+  const embed = $('#playlistEmbed');
+  if (embed && embed.contentWindow) {
+    const action = play ? 'playVideo' : 'pauseVideo';
+    embed.contentWindow.postMessage(JSON.stringify({ event: 'command', func: action, args: [] }), '*');
+  }
+}
+
+function playActiveMedia() {
+  if (activeAudioEngine === 'spotify') {
+    if (spotifyEmbedController) {
+      spotifyEmbedController.play();
+    } else {
+      postMessageToEmbed({ type: 'esExpose', value: 'play' });
+    }
+  } else if (activeAudioEngine === 'youtube') {
+    toggleYouTubeEmbedPlayback(true);
+  } else if (activeAudioEngine === 'synth') {
+    if (!state.playing) togglePlay();
+  }
+}
+
+function pauseActiveMedia() {
+  if (activeAudioEngine === 'spotify') {
+    if (spotifyEmbedController) {
+      spotifyEmbedController.pause();
+    } else {
+      postMessageToEmbed({ type: 'esExpose', value: 'pause' });
+    }
+  } else if (activeAudioEngine === 'youtube') {
+    toggleYouTubeEmbedPlayback(false);
+  } else if (activeAudioEngine === 'synth') {
+    if (state.playing) togglePlay();
+  }
+}
+
 const starterPlaylists = [
   { id: 'starter-90s', title: '90s Love Hits', provider: 'Spotify', tag: 'the big feelings', color: '#ff9a82', spotifyUri: 'spotify:playlist:37i9dQZF1DXa6iPZDThhLh', sourceUrl: 'https://open.spotify.com/playlist/37i9dQZF1DXa6iPZDThhLh', embedUrl: 'https://open.spotify.com/embed/playlist/37i9dQZF1DXa6iPZDThhLh?utm_source=generator&theme=0' },
   { id: 'starter-indie', title: 'Indie India', provider: 'Spotify', tag: 'the soft launch', color: '#d7ff72', spotifyUri: 'spotify:playlist:37i9dQZF1DX5q67ZpWyRrZ', sourceUrl: 'https://open.spotify.com/playlist/37i9dQZF1DX5q67ZpWyRrZ', embedUrl: 'https://open.spotify.com/embed/playlist/37i9dQZF1DX5q67ZpWyRrZ?utm_source=generator&theme=0' },
@@ -557,7 +593,7 @@ function parsePlaylistUrl(rawUrl) {
         return {
           provider: isMusic ? 'YouTube Music' : 'YouTube',
           sourceUrl: url.href,
-          embedUrl: `${embedHost}/embed/videoseries?list=${encodeURIComponent(list)}&autoplay=1`
+          embedUrl: `${embedHost}/embed/videoseries?list=${encodeURIComponent(list)}&autoplay=1&enablejsapi=1`
         };
       }
       if (video) {
@@ -565,7 +601,7 @@ function parsePlaylistUrl(rawUrl) {
         return {
           provider: isMusic ? 'YouTube Music' : 'YouTube',
           sourceUrl: url.href,
-          embedUrl: `${embedHost}/embed/${encodeURIComponent(video)}?autoplay=1`
+          embedUrl: `${embedHost}/embed/${encodeURIComponent(video)}?autoplay=1&enablejsapi=1`
         };
       }
     }
@@ -702,6 +738,11 @@ function syncCountdown() {
   const button = $('.sync-button');
   if (button.disabled) return;
   button.disabled = true;
+  
+  // Pause whatever is playing
+  pauseActiveMedia();
+  showToast('Paused for sync countdown...');
+  
   let count = 3;
   button.textContent = `${count}…`;
   const timer = setInterval(() => {
@@ -709,10 +750,13 @@ function syncCountdown() {
     if (count > 0) { button.textContent = `${count}…`; return; }
     clearInterval(timer);
     button.textContent = 'hit play together';
-    showToast('Now — hit play in the shared player!');
-    if (activeAudioEngine === 'spotify') toggleSpotifyEmbedPlayback();
+    showToast('▶ Playing together now!');
+    
+    // Automatically resume playing
+    playActiveMedia();
+    
     setTimeout(() => { button.disabled = false; button.textContent = 'start a 3–2–1'; }, 2200);
-  }, 700);
+  }, 1000);
 }
 
 function isUnlocked(index) { return index === 0 || state.completed.includes(stages[index - 1]?.id); }
@@ -885,8 +929,17 @@ function startProgress() {
 function togglePlay() {
   const dock = $('.player-dock');
 
-  if (activeAudioEngine === 'spotify') {
-    toggleSpotifyEmbedPlayback();
+  if (activeAudioEngine === 'spotify' || activeAudioEngine === 'youtube') {
+    const isPlaying = dock.classList.contains('is-playing');
+    if (isPlaying) {
+      pauseActiveMedia();
+      dock.classList.remove('is-playing');
+      $('.play-button').setAttribute('aria-pressed', 'false');
+    } else {
+      playActiveMedia();
+      dock.classList.add('is-playing');
+      $('.play-button').setAttribute('aria-pressed', 'true');
+    }
     return;
   }
 
@@ -966,8 +1019,8 @@ function handleAction(action) {
     showModal('roomModal');
     showToast(`Loaded soundtrack into Spotify Embed.`);
   }
-  else if (action === 'embed-play') { toggleSpotifyEmbedPlayback(); }
-  else if (action === 'embed-pause') { toggleSpotifyEmbedPlayback(); }
+  else if (action === 'embed-play') { playActiveMedia(); }
+  else if (action === 'embed-pause') { pauseActiveMedia(); }
   else if (action === 'reset') resetStory();
 }
 
