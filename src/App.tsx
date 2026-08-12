@@ -71,6 +71,17 @@ export function App() {
       {/* Noise Grain Overlay */}
       <div className="noise" />
 
+      {/* Global Audio Stream Embed */}
+      {isPlaying && embedUrl && (
+        <iframe 
+          key={embedUrl}
+          src={embedUrl}
+          className="hidden pointer-events-none"
+          allow="autoplay; encrypted-media; fullscreen; picture-in-picture"
+          aria-hidden="true"
+        />
+      )}
+
       {/* Top Header */}
       <Topbar 
         heartCount={completedCount}
