@@ -1,0 +1,55 @@
+@import "tailwindcss";
+
+@theme {
+  --color-bg: #080B17;
+  --color-surface: #10142A;
+  --color-surface-2: #171A38;
+  --color-coral: #FF7A59;
+  --color-lime: #C8FF4F;
+  --color-lavender: #C084FC;
+  --color-text-main: #F3F4F8;
+  --color-muted: #A1A5B7;
+}
+
+@layer base {
+  :root {
+    background-color: var(--color-bg);
+    color: var(--color-text-main);
+  }
+  
+  body {
+    margin: 0;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+}
+
+@layer components {
+  .heartbeat-panel {
+    background: linear-gradient(
+      135deg,
+      rgba(20, 24, 52, 0.82),
+      rgba(10, 13, 31, 0.76)
+    );
+    border: 1px solid rgba(255, 255, 255, 0.10);
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.30),
+      inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    backdrop-filter: blur(14px);
+    border-radius: 16px;
+  }
+  
+  .world-grain {
+    opacity: 0.045;
+    mix-blend-mode: soft-light;
+    background-image: url("/textures/noise.png");
+    animation: grain 0.18s steps(2) infinite;
+  }
+}
+
+@keyframes grain {
+  0% { transform: translate(0, 0); }
+  25% { transform: translate(-1%, 1%); }
+  50% { transform: translate(1%, -1%); }
+  75% { transform: translate(1%, 1%); }
+  100% { transform: translate(0, 0); }
+}

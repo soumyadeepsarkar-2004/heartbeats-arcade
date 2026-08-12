@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0" />
+  <meta name="theme-color" content="#10142c" />
+  <title>Heartbeats Arcade · Shared Listening Room for Two</title>
+  <meta name="description" content="A shared listening room and interactive music diary for two people. Stream Spotify, YouTube, Apple Music, and SoundCloud together." />
+  
+  <!-- Open Graph / Facebook -->
+  <meta property="og:type" content="website" />
+  <meta property="og:title" content="Heartbeats Arcade · Shared Listening Room" />
+  <meta property="og:description" content="Share playlists, stream music together, and build a relationship music diary." />
+  <meta property="og:image" content="assets/twilight-cassette-city.png" />
+  <meta property="og:site_name" content="Heartbeats Arcade" />
+
+  <!-- Twitter -->
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Heartbeats Arcade · Shared Listening Room" />
+  <meta name="twitter:description" content="Share playlists, stream music together, and build a relationship music diary." />
+  <meta name="twitter:image" content="assets/twilight-cassette-city.png" />
+
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>♥</text></svg>">
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="sky-glow glow-one" aria-hidden="true"></div>
+  <div class="sky-glow glow-two" aria-hidden="true"></div>
+
+  <main class="app-shell">
+    <header class="topbar">
+      <div class="ambient-status" aria-label="Current connection status">
+        <span class="live-dot"></span>
+        <span id="clock">09:41 pm</span>
+        <span class="status-divider">/</span>
+        <span id="heartCount">0</span><span class="heart-symbol">♥</span>
+      </div>
+
+      <button class="room-button" type="button" aria-label="Open the listening room" data-action="open-room"><span
+          aria-hidden="true">◌</span> room</button>
+    </header>
+
+    <section class="hero" id="home" aria-labelledby="hero-title">
+      <div class="eyebrow"><span></span> shared listening diary</div>
+      <h1 id="hero-title">listen<br /><i>together.</i></h1>
+      <p class="hero-copy">Drop a playlist, press play, and keep the moment as a small music diary.</p>
+      <div class="hero-actions">
+        <button class="primary-button" type="button" data-action="open-room">
+          <span class="button-icon">◌</span>
+          <span>enter the room</span>
+          <span class="button-arrow">↗</span>
+        </button>
+        <button class="text-button resume-button" type="button" data-action="open-map">open story map<span
+            class="resume-link"> <span id="resumeStage">continue</span><span aria-hidden="true"> →</span></span></button>
+      </div>
+      <div class="tape-sticker" aria-hidden="true">
+        <span>made for</span>
+        <strong>two</strong>
+        <small>press play<br />when ready</small>
+      </div>
+    </section>
+
+    <section class="player-dock" aria-label="Now playing">
+      <div class="cover-art" id="coverArt" aria-hidden="true">
+        <span class="cover-label">SIDE<br />A</span>
+        <span class="cover-heart">♥</span>
+        <span class="cover-name">typing...</span>
+      </div>
+      <div class="track-details">
+        <div class="now-playing-row">
+          <span class="now-playing-text" id="nowPlaying">STAGE PREVIEW</span>
+          <span id="sourceBadge" class="source-badge">Synth Loop</span>
+        </div>
+        <h2 id="playerTitle">Typing...</h2>
+        <p id="playerArtist">the first-reply club · 01:42</p>
+      </div>
+      <div class="player-controls">
+        <button class="skip-button" type="button" aria-label="Previous vibe" data-action="previous">⏮</button>
+        <button class="play-button" type="button" aria-label="Play or pause music" aria-pressed="false"
+          data-action="play">
+          <svg class="play-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="m8 5 11 7-11 7V5Z" />
+          </svg>
+          <svg class="pause-icon" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M7 5h3v14H7V5Zm7 0h3v14h-3V5Z" />
+          </svg>
+        </button>
+        <button class="skip-button" type="button" aria-label="Next vibe" data-action="next">⏭</button>
+        <button class="room-dock-button" type="button" aria-label="Open shared listening room" data-action="open-room" title="Open Room">
+          <span aria-hidden="true">◌</span> room
+        </button>
+        <div class="equalizer" id="equalizer" aria-label="Audio visualizer" role="img">
+          <i></i><i></i><i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="track-progress">
+        <input id="progressInput" type="range" min="0" max="100" value="18" aria-label="Track progress" />
+        <div><span id="elapsed">0:18</span><span id="duration">1:42</span></div>
+      </div>
+    </section>
+  </main>
+
+  <div class="modal-layer" id="mapModal" hidden>
+    <section class="modal map-modal" aria-modal="true" role="dialog" aria-labelledby="mapTitle">
+      <div class="modal-header">
+        <div>
+          <p class="modal-overline">the relationship mixtape</p>
+          <h2 id="mapTitle">Pick your next <i>chapter.</i></h2>
+        </div>
+        <button class="close-button" type="button" aria-label="Close level map" data-action="close-modal">×</button>
+      </div>
+      <div class="map-meta"><span><b id="completeCount">0</b> / 7 tracks discovered</span><span>choose soft, choose
+          loud, choose honest</span></div>
+      <div class="level-grid" id="levelGrid"></div>
+      <div class="map-footer">
+        <span class="tiny-cassette" aria-hidden="true">▰</span>
+        <span>Every clear level gives you an original music preview.</span>
+        <button class="reset-link" type="button" data-action="reset">reset story</button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-layer" id="gameModal" hidden>
+    <section class="modal game-modal" aria-modal="true" role="dialog" aria-labelledby="gameTitle">
+      <button class="close-button game-close" type="button" aria-label="Close level"
+        data-action="close-modal">×</button>
+      <div class="game-meta">
+        <span id="gameNumber">01</span>
+        <span>relationship quest</span>
+        <span id="gameState">unlocked</span>
+      </div>
+      <div class="game-main">
+        <div class="game-visual" id="gameVisual" aria-hidden="true">
+          <span class="orb orb-a"></span><span class="orb orb-b"></span><span class="game-symbol"
+            id="gameSymbol">…</span>
+        </div>
+        <div class="game-copy">
+          <p class="modal-overline" id="gamePhase">the warm-up</p>
+          <h2 id="gameTitle">Talking Stage</h2>
+          <p id="gameDescription">A small spark, a very big screen, and the first message waiting to be sent.</p>
+          <div class="soundtrack-card">
+            <div class="soundtrack-info">
+              <span class="prompt-number">stage soundtrack</span>
+              <strong id="gameSoundtrackTitle">Indie India</strong>
+              <small id="gameSoundtrackMeta">Spotify iFrame · Free to listen</small>
+            </div>
+            <div class="soundtrack-actions">
+              <button class="primary-button mini-load-button" type="button" data-action="use-stage-soundtrack">
+                <span>♫ Load in Embed</span>
+              </button>
+              <button class="embed-button embed-play" type="button" data-action="embed-play" aria-label="Play track">▶</button>
+              <button class="embed-button embed-pause" type="button" data-action="embed-pause" aria-label="Pause track">⏸</button>
+            </div>
+          </div>
+          <div class="prompt-card">
+            <span class="prompt-number">01</span>
+            <p id="gamePrompt">Pick the energy for your opening line.</p>
+          </div>
+          <div class="choice-list" id="choiceList"></div>
+          <button class="primary-button lock-button" type="button" data-action="complete" disabled>
+            <span>lock in the vibe</span><span class="button-arrow">↗</span>
+          </button>
+          <p class="game-note">There are no wrong answers. Just better stories.</p>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-layer" id="winModal" hidden>
+    <section class="modal win-modal" aria-modal="true" role="dialog" aria-labelledby="winTitle">
+      <div class="confetti" aria-hidden="true"><i>✦</i><i>♥</i><i>✧</i><i>✦</i><i>♥</i><i>✧</i></div>
+      <p class="modal-overline">level cleared</p>
+      <div class="win-icon" id="winIcon">♡</div>
+      <h2 id="winTitle">That felt like a <i>good sign.</i></h2>
+      <p id="winText">You unlocked a little something for the afterglow.</p>
+      <div class="unlocked-track">
+        <div class="mini-cover" id="winCover"><span>♥</span></div>
+        <div><span>new vibe unlocked</span><strong id="winSong">Typing...</strong><small id="winArtist">the first-reply
+            club</small></div>
+        <button class="mini-play" type="button" aria-label="Play unlocked preview" data-action="play">▶</button>
+      </div>
+      <div class="win-actions">
+        <button class="primary-button" type="button" data-action="next-level">next chapter <span
+            class="button-arrow">↗</span></button>
+        <button class="text-button" type="button" data-action="close-all">back to map <span
+            aria-hidden="true">→</span></button>
+      </div>
+    </section>
+  </div>
+
+  <div class="modal-layer" id="roomModal" hidden>
+    <section class="modal room-modal" aria-modal="true" role="dialog" aria-labelledby="roomTitle">
+      <button class="close-button game-close" type="button" aria-label="Close listening room" data-action="close-modal">×</button>
+      <div class="room-heading">
+        <div>
+          <p class="modal-overline">shared listening room <span class="room-live-dot"></span></p>
+          <h2 id="roomTitle">music for<br /><i>two.</i></h2>
+        </div>
+        <div class="room-id"><span>tape id</span><strong id="roomCode">m-08</strong></div>
+      </div>
+      <p class="room-intro">Choose a playlist for the moment, add your Spotify or YouTube link, and share music with your partner.</p>
+      <p class="room-stage" id="roomStage">best match for now</p>
+
+      <div class="room-layout">
+        <section class="listening-panel" aria-labelledby="listeningTitle">
+          <div class="panel-label"><span id="listeningTitle">best match in the room</span><button class="copy-room"
+              type="button" data-action="copy-room">copy invite ↗</button></div>
+          <div class="embed-wrap">
+            <iframe id="playlistEmbed" title="Selected streaming playlist" loading="lazy"
+              allow="autoplay; clipboard-write; encrypted-media; fullscreen; picture-in-picture"></iframe>
+            <div class="embed-overlay">
+              <button class="embed-button embed-play" type="button" data-action="embed-play" aria-label="Play in embed player">▶</button>
+              <button class="embed-button embed-pause" type="button" data-action="embed-pause" aria-label="Pause embed player">⏸</button>
+            </div>
+          </div>
+          <div class="embed-caption"><span id="roomPlaylistName">90s Love Hits</span><span id="roomPlaylistMeta">Spotify
+              · starter pick</span></div>
+          <div class="starter-row" id="starterRow" aria-label="Starter playlist picks"></div>
+          <div class="sync-row"><span><i></i> same-moment mode</span><button type="button" class="sync-button"
+              data-action="sync-countdown">start a 3–2–1</button></div>
+        </section>
+
+        <aside class="diary-panel" aria-labelledby="diaryTitle">
+          <div class="panel-label">
+            <span id="diaryTitle">shared music diary</span>
+            <div class="diary-filters" id="diaryFilters">
+              <button type="button" class="filter-chip active" data-filter="all">all</button>
+              <button type="button" class="filter-chip" data-filter="Person 1">p1</button>
+              <button type="button" class="filter-chip" data-filter="Person 2">p2</button>
+            </div>
+            <span id="diaryCount">0 saved</span>
+          </div>
+          <div class="diary-list" id="diaryList"></div>
+          <form class="playlist-form" id="playlistForm">
+            <label for="playlistUrl">drop a Spotify, YouTube Music, or YouTube playlist</label>
+            <div class="partner-picker" aria-label="Select who is sharing this track">
+              <span class="picker-label">shared by:</span>
+              <label><input type="radio" name="addedBy" value="Person 1" checked /> <span>P1 (You)</span></label>
+              <label><input type="radio" name="addedBy" value="Person 2" /> <span>P2 (Partner)</span></label>
+            </div>
+            <div class="url-input-row"><input id="playlistUrl" name="playlistUrl" type="url"
+                placeholder="paste Spotify or YouTube link" required /><button type="submit">save</button></div>
+            <div class="playlist-options"><input id="playlistTitle" name="playlistTitle" type="text"
+                placeholder="name it, if you want" /><select id="playlistMood" name="playlistMood"
+                aria-label="Playlist mood">
+                <option value="soft">soft</option>
+                <option value="electric">electric</option>
+                <option value="deep">deep</option>
+              </select></div>
+          </form>
+        </aside>
+      </div>
+
+      <div class="mood-row">
+        <div><span class="panel-label">pick the next feeling</span>
+          <p>Save a tiny note about where the music is taking you.</p>
+        </div>
+        <div class="mood-options" id="moodOptions"><button type="button" data-mood="soft">soft <i>♡</i></button><button
+            type="button" data-mood="electric">electric <i>✦</i></button><button type="button" data-mood="deep">deep
+            <i>≈</i></button></div>
+        <div class="mood-status" id="moodStatus">still deciding</div>
+      </div>
+      <p class="room-note">The invite carries this diary. Synchronize your playback with your favorite person anytime.</p>
+    </section>
+  </div>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="https://open.spotify.com/embed/iframe-api/v1" async></script>
+  <script src="https://www.youtube.com/iframe_api"></script>
+  <script src="script.js"></script>
+</body>
+
+</html>
