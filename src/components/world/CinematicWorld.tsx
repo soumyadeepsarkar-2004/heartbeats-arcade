@@ -27,7 +27,7 @@ export function CinematicWorld() {
         {/* Full Viewport 20-Second Ambient Video Loop */}
         <video
           ref={videoRef}
-          className="absolute inset-0 h-full w-full object-cover brightness-[1.03] contrast-[1.04]"
+          className="absolute inset-0 h-full w-full object-cover brightness-[1.05] contrast-[1.05]"
           poster="/assets/twilight-cassette-city.png"
           autoPlay
           muted
