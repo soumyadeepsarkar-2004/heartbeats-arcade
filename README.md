@@ -62,4 +62,4 @@ Output files are generated in the `dist/` directory.
 
 ## 🌐 Live Production Deployment
 
-The production app is deployed live at: **[https://90sheartbeat.netlify.app](https://90sheartbeat.netlify.app/)**
+The production app is deployed live at: **[https://twoheartsbeat.vercel.app/](https://twoheartsbeat.vercel.app/)**
