@@ -1,8 +1,8 @@
-# 💖 Heartbeats Arcade (90s Heartbeat)
+# 💖 Two Hearts Beat
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-heartbeats--arcade.vercel.app-ff5e96?style=for-the-badge&logo=vercel)](https://heartbeats-arcade.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-twoheartsbeat.vercel.app-ff5e96?style=for-the-badge&logo=vercel)](https://twoheartsbeat.vercel.app/)
 [![React 19](https://img.shields.io/badge/React-19.0-61dafb?style=for-the-badge&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Supabase Realtime](https://img.shields.io/badge/Supabase-Realtime_WebSockets-3ecf8e?style=for-the-badge&logo=supabase)](https://supabase.com/)
@@ -11,7 +11,7 @@
 
 **An interactive, real-time shared music & video experience designed for two listeners to vibe together anywhere in the world.**
 
-[🌐 Explore Live Site](https://heartbeats-arcade.vercel.app/) • [📖 Product Guide](#-product-guide--how-to-use) • [⚙️ Installation](#%EF%B8%8F-getting-started--local-development)
+[🌐 Explore Live Site](https://twoheartsbeat.vercel.app/) • [📖 Product Guide](#-product-guide--how-to-use) • [⚙️ Installation](#%EF%B8%8F-getting-started--local-development)
 
 ---
 
@@ -19,7 +19,7 @@
 
 ## 🌟 Overview
 
-**Heartbeats Arcade** is a modern, retro-romantic music application built for couples and friends to listen, watch, and synchronize music playback in real time across different devices. 
+**Two Hearts Beat** is a modern, retro-romantic music application built for couples and friends to listen, watch, and synchronize music playback in real time across different devices. 
 
 Whether you're exploring the 7-stage interactive relationship story or hanging out in the **Shared Listening Room**, every action—track selection, play/pause, position seeking, and music diary additions—synchronizes instantly using **Supabase Realtime WebSockets**.
 
@@ -87,7 +87,7 @@ Whether you're exploring the 7-stage interactive relationship story or hanging o
 ## 📖 Product Guide — How to Use
 
 ### Step 1: Open the Application
-Navigate to [heartbeats-arcade.vercel.app](https://heartbeats-arcade.vercel.app/) or run locally at `http://localhost:5173`.
+Navigate to [twoheartsbeat.vercel.app](https://twoheartsbeat.vercel.app/) or run locally at `http://localhost:5173`.
 
 ### Step 2: Choose Your Listener Persona
 1. Click the **`◌ ROOM`** button in the bottom dock or top header.
@@ -139,7 +139,7 @@ Navigate to [heartbeats-arcade.vercel.app](https://heartbeats-arcade.vercel.app/
    ```bash
    cp .env.example .env
    ```
-   Add your free Supabase credentials (optional for cross-device testing):
+   Add your free Supabase credentials:
    ```env
    VITE_SUPABASE_URL=https://uknmhlemnorzjiaitxwj.supabase.co
    VITE_SUPABASE_ANON_KEY=sb_publishable_fD32UZLJmd4_Odf4i1hRVg_WadLfYzq
@@ -175,6 +175,6 @@ Distributed under the MIT License. See `LICENSE` for more details.
 
 <div align="center">
 
-Made with ♥ for music lovers. Live at [heartbeats-arcade.vercel.app](https://heartbeats-arcade.vercel.app/)
+Made with ♥ for music lovers. Live at [twoheartsbeat.vercel.app](https://twoheartsbeat.vercel.app/)
 
 </div>
