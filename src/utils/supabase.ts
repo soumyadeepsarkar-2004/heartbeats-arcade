@@ -1,10 +1,10 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || 'https://uknmhlemnorzjiaitxwj.supabase.co';
+const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = 
   import.meta.env.VITE_SUPABASE_ANON_KEY || 
   import.meta.env.VITE_SUPABASE_PUBLISHABLE_KEY || 
-  'sb_publishable_fD32UZLJmd4_Odf4i1hRVg_WadLfYzq';
+  '';
 
 export const isSupabaseConfigured = Boolean(
   supabaseUrl && 
@@ -12,5 +12,8 @@ export const isSupabaseConfigured = Boolean(
   !supabaseUrl.includes('your-project')
 );
 
-// Supabase Realtime Client Instance
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+// Supabase Realtime Client Instance (reads environment variables securely)
+export const supabase = createClient(
+  isSupabaseConfigured ? supabaseUrl : 'https://xyzcompany.supabase.co',
+  isSupabaseConfigured ? supabaseAnonKey : 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.dummykey'
+);
