@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import type { StageTrack } from '../../types';
 
 interface GameModalProps {
@@ -19,13 +20,20 @@ export function GameModal({
   onComplete,
   onPlaySong
 }: GameModalProps) {
+  // Automatically trigger dedicated stage soundtrack playback when entering a stage or moving to next chapter
+  useEffect(() => {
+    if (isOpen && stage) {
+      onPlaySong(stage);
+    }
+  }, [isOpen, stage, onPlaySong]);
+
   if (!isOpen) return null;
 
   const isActionable = selectedChoice !== null || stage.isCompleted;
 
   return (
     <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-bg/80 backdrop-blur-md">
-      <section className="heartbeat-panel w-full max-w-2xl p-6 sm:p-8 rounded-3xl relative max-h-[90vh] overflow-y-auto custom-scrollbar">
+      <section className="heartbeat-panel w-full max-w-2xl p-6 sm:p-8 rounded-3xl relative max-h-[90vh] overflow-y-auto custom-scrollbar select-none">
         
         {/* Close Button */}
         <button 
@@ -57,7 +65,7 @@ export function GameModal({
           {/* Stage Soundtrack Card */}
           <div className="bg-[#171A38]/90 border border-white/15 rounded-2xl p-4 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
             <div>
-              <span className="text-[9px] uppercase font-mono tracking-widest text-white/60 block mb-0.5">stage soundtrack</span>
+              <span className="text-[9px] uppercase font-mono tracking-widest text-[#C8FF4F] font-bold block mb-0.5">● Playing Stage Soundtrack</span>
               <strong className="text-white text-base font-serif block">{stage.song}</strong>
               <small className="text-xs text-white/70">{stage.artist} · YouTube</small>
             </div>
@@ -66,7 +74,7 @@ export function GameModal({
               onClick={() => onPlaySong(stage)}
               className="px-4 py-2 rounded-full bg-[#C8FF4F] text-[#080B17] text-xs font-mono uppercase tracking-widest font-bold hover:bg-white hover:text-[#080B17] transition-colors cursor-pointer"
             >
-              ♫ Load in Embed
+              ♫ Replay Song
             </button>
           </div>
 
