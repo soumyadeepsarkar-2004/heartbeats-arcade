@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { Clock } from 'lucide-react';
 
 interface TopbarProps {
   heartCount: number;
@@ -29,16 +30,17 @@ export function Topbar({
     <header className="fixed top-0 left-0 right-0 z-40 flex items-center justify-between px-6 py-4 pointer-events-none select-none">
       
       {/* Left: Clock & Heart Count Badge */}
-      <div className="pointer-events-auto flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface/80 border border-white/10 backdrop-blur-md text-xs font-mono tracking-wider text-muted shadow-lg">
-        <span className="w-2 h-2 rounded-full bg-lime animate-pulse" />
-        <span>{timeStr}</span>
-        <span className="text-white/20">/</span>
+      <div className="pointer-events-auto flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-white/10 backdrop-blur-md text-xs font-mono tracking-wider text-muted shadow-lg">
+        <span className="w-2 h-2 rounded-full bg-lime animate-pulse mr-0.5" />
+        <Clock className="w-3.5 h-3.5 text-white/70 inline-block" />
+        <span className="text-white/90">{timeStr}</span>
+        <span className="text-white/20 px-0.5">/</span>
         <span className="text-white font-semibold">{heartCount}</span>
         <span className="text-coral">♥</span>
 
         {partnerActive && (
           <>
-            <span className="text-white/20 hidden sm:inline">/</span>
+            <span className="text-white/20 hidden sm:inline px-0.5">/</span>
             <span className="text-[#C8FF4F] font-bold hidden sm:inline-flex items-center gap-1 text-[10px]">
               <span className="w-1.5 h-1.5 rounded-full bg-[#C8FF4F] animate-ping" />
               Synced
