@@ -102,6 +102,18 @@ export function App() {
     playStageTrack(activeStage);
   };
 
+  const handleNextLevel = () => {
+    const idx = stages.findIndex(s => s.id === activeStage.id);
+    const nextIdx = idx + 1;
+    if (nextIdx < stages.length && stages[nextIdx].isUnlocked) {
+      const nextStage = stages[nextIdx];
+      openNextStage();
+      playStageTrack(nextStage);
+    } else {
+      openNextStage();
+    }
+  };
+
   const handleToggleSection = () => {
     if (activeMode === 'story') {
       setActiveMode('room');
@@ -207,7 +219,7 @@ export function App() {
       <WinModal 
         isOpen={activeModal === 'win'}
         stage={activeStage}
-        onNextLevel={openNextStage}
+        onNextLevel={handleNextLevel}
         onBackToMap={() => setActiveModal('map')}
         onPlaySong={playStageTrack}
       />
