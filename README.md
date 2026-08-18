@@ -2,7 +2,7 @@
 
 <div align="center">
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-90sheartbeat.vercel.app-ff5e96?style=for-the-badge&logo=vercel)](https://90sheartbeat.vercel.app/)
+[![Live Demo](https://img.shields.io/badge/Live_Demo-heartbeats--arcade.vercel.app-ff5e96?style=for-the-badge&logo=vercel)](https://heartbeats-arcade.vercel.app/)
 [![React 19](https://img.shields.io/badge/React-19.0-61dafb?style=for-the-badge&logo=react)](https://react.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.0-3178c6?style=for-the-badge&logo=typescript)](https://www.typescriptlang.org/)
 [![Supabase Realtime](https://img.shields.io/badge/Supabase-Realtime_WebSockets-3ecf8e?style=for-the-badge&logo=supabase)](https://supabase.com/)
@@ -11,7 +11,7 @@
 
 **An interactive, real-time shared music & video experience designed for two listeners to vibe together anywhere in the world.**
 
-[🌐 Explore Live Site](https://90sheartbeat.vercel.app/) • [📖 Product Guide](#-product-guide--how-to-use) • [⚙️ Installation](#%EF%B8%8F-getting-started--local-development)
+[🌐 Explore Live Site](https://heartbeats-arcade.vercel.app/) • [📖 Product Guide](#-product-guide--how-to-use) • [⚙️ Installation](#%EF%B8%8F-getting-started--local-development)
 
 ---
 
@@ -87,7 +87,7 @@ Whether you're exploring the 7-stage interactive relationship story or hanging o
 ## 📖 Product Guide — How to Use
 
 ### Step 1: Open the Application
-Navigate to [90sheartbeat.vercel.app](https://90sheartbeat.vercel.app/) or run locally at `http://localhost:5173`.
+Navigate to [heartbeats-arcade.vercel.app](https://heartbeats-arcade.vercel.app/) or run locally at `http://localhost:5173`.
 
 ### Step 2: Choose Your Listener Persona
 1. Click the **`◌ ROOM`** button in the bottom dock or top header.
@@ -175,6 +175,6 @@ Distributed under the MIT License. See `LICENSE` for more details.
 
 <div align="center">
 
-Made with ♥ for music lovers. Live at [90sheartbeat.vercel.app](https://90sheartbeat.vercel.app/)
+Made with ♥ for music lovers. Live at [heartbeats-arcade.vercel.app](https://heartbeats-arcade.vercel.app/)
 
 </div>
