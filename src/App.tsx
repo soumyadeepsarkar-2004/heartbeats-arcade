@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { CinematicWorld } from './components/world/CinematicWorld';
 import { Topbar } from './components/layout/Topbar';
 import { Hero } from './components/layout/Hero';
@@ -6,10 +7,14 @@ import { MapModal } from './components/modals/MapModal';
 import { GameModal } from './components/modals/GameModal';
 import { WinModal } from './components/modals/WinModal';
 import { RoomModal } from './components/modals/RoomModal';
+import { YouTubeAudioPlayer } from './components/audio/YouTubeAudioPlayer';
 import { useAmbientState } from './hooks/useAmbientState';
 import { useAudioEngine } from './hooks/useAudioEngine';
+import { useRoomSync } from './hooks/useRoomSync';
 
 export function App() {
+  const [currentRole, setCurrentRole] = useState<'Person 1' | 'Person 2'>('Person 1');
+
   const {
     stages,
     activeStage,
@@ -31,22 +36,69 @@ export function App() {
     activeMode,
     currentTrackTitle,
     currentArtist,
-    embedUrl,
+    currentTrackColor,
+    videoId,
+    playlistId,
+    ytMusicUrl,
     progress,
     currentTimeSec,
     totalDurationSec,
+    playerRef,
+    setIsPlaying,
+    setCurrentTimeSec,
     playStageTrack,
     playRoomEntry,
     togglePlay,
     setActiveMode,
     nextTrack,
     prevTrack,
-    seekProgress
+    seekProgress,
+    handleProgressSync
   } = useAudioEngine();
+
+  // Real-Time Dual Listener Sync Hook
+  const {
+    partnerActive,
+    partnerNotification,
+    syncTrackChange,
+    syncPlayPause,
+    syncSeek,
+    syncAddEntry
+  } = useRoomSync({
+    currentRole,
+    onSyncTrack: (entry) => playRoomEntry(entry),
+    onSyncPlayPause: (playing) => setIsPlaying(playing),
+    onSyncSeek: (sec) => {
+      setCurrentTimeSec(sec);
+      playerRef.current?.seekTo(sec);
+    },
+    onSyncAddEntry: (entry) => addRoomEntry(entry)
+  });
+
+  const handlePlayRoomEntry = (entry: any) => {
+    playRoomEntry(entry);
+    syncTrackChange(entry);
+  };
+
+  const handleTogglePlay = () => {
+    const nextState = !isPlaying;
+    togglePlay();
+    syncPlayPause(nextState);
+  };
+
+  const handleSeekProgress = (val: number) => {
+    seekProgress(val);
+    const targetSec = Math.round((val / 100) * totalDurationSec);
+    syncSeek(targetSec);
+  };
+
+  const handleAddRoomEntry = (entry: any) => {
+    addRoomEntry(entry);
+    syncAddEntry(entry);
+  };
 
   const handleCompleteStage = () => {
     completeStage();
-    // Directly play the unlocked stage track
     playStageTrack(activeStage);
   };
 
@@ -54,13 +106,29 @@ export function App() {
     if (activeMode === 'story') {
       setActiveMode('room');
       if (roomEntries.length > 0) {
-        playRoomEntry(roomEntries[0]);
+        handlePlayRoomEntry(roomEntries[0]);
       }
     } else {
       setActiveMode('story');
       playStageTrack(activeStage);
     }
   };
+
+  const playerNode = (
+    <YouTubeAudioPlayer 
+      ref={playerRef}
+      videoId={videoId}
+      playlistId={playlistId}
+      isPlaying={isPlaying}
+      onStateChange={(playing) => setIsPlaying(playing)}
+      onProgressSync={handleProgressSync}
+      onEnded={() => nextTrack(stages, activeStage.id, roomEntries)}
+      currentTrackTitle={currentTrackTitle}
+      currentArtist={currentArtist}
+      ytMusicUrl={ytMusicUrl}
+      isRoomOpen={activeModal === 'room'}
+    />
+  );
 
   return (
     <div className="relative min-h-screen text-ink overflow-x-hidden select-none">
@@ -71,20 +139,11 @@ export function App() {
       {/* Noise Grain Overlay */}
       <div className="noise" />
 
-      {/* Global Audio Stream Embed (Must NOT be display:none so browsers render audio output) */}
-      {isPlaying && embedUrl && (
-        <iframe 
-          key={embedUrl}
-          src={embedUrl}
-          className="fixed bottom-0 left-0 w-1 h-1 opacity-0 pointer-events-none z-[-100]"
-          allow="autoplay; accelerometer; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-          aria-hidden="true"
-        />
-      )}
-
-      {/* Top Header */}
+      {/* Clean Top Header */}
       <Topbar 
         heartCount={completedCount}
+        partnerActive={partnerActive}
+        partnerNotification={partnerNotification}
         onOpenRoom={() => setActiveModal('room')}
       />
 
@@ -95,7 +154,7 @@ export function App() {
         onOpenMap={() => setActiveModal('map')}
       />
 
-      {/* Fixed Bottom Player Dock */}
+      {/* Fixed Bottom Player Dock with dynamic song color matching */}
       <PlayerDock 
         title={currentTrackTitle}
         artist={currentArtist}
@@ -107,11 +166,14 @@ export function App() {
         stages={stages}
         currentStageId={activeStage.id}
         roomEntries={roomEntries}
-        onTogglePlay={togglePlay}
+        ytMusicUrl={ytMusicUrl}
+        currentTrackColor={currentTrackColor}
+        onTogglePlay={handleTogglePlay}
         onPrev={() => prevTrack(stages, activeStage.id, roomEntries)}
         onNext={() => nextTrack(stages, activeStage.id, roomEntries)}
         onToggleSection={handleToggleSection}
-        onProgressChange={seekProgress}
+        onProgressChange={handleSeekProgress}
+        onOpenRoom={() => setActiveModal('room')}
       />
 
       {/* 1. Story Map Modal */}
@@ -150,23 +212,40 @@ export function App() {
         onPlaySong={playStageTrack}
       />
 
-      {/* 4. Shared Listening Room Modal */}
+      {/* 4. Shared Listening Room Modal with Embedded Video Screen */}
       <RoomModal 
         isOpen={activeModal === 'room'}
         entries={roomEntries}
-        embedUrl={embedUrl}
+        currentTrackTitle={currentTrackTitle}
+        currentArtist={currentArtist}
+        isPlaying={isPlaying}
+        ytMusicUrl={ytMusicUrl}
+        currentRole={currentRole}
+        partnerActive={partnerActive}
+        partnerNotification={partnerNotification}
+        videoPlayerNode={playerNode}
+        onChangeRole={(role) => setCurrentRole(role)}
         onClose={() => setActiveModal(null)}
-        onAddEntry={addRoomEntry}
+        onAddEntry={handleAddRoomEntry}
+        onSelectEntry={(entry) => handlePlayRoomEntry(entry)}
         onSelectPlaylist={(p) => {
-          playRoomEntry({
+          const firstTrack = p.tracks?.[0];
+          handlePlayRoomEntry({
             id: p.id,
-            title: p.title,
-            addedBy: 'Person 1',
-            url: p.embedUrl,
+            title: firstTrack?.title || p.title,
+            artist: firstTrack?.artist || 'Curated Playlist',
+            addedBy: currentRole,
+            url: p.ytMusicUrl || p.embedUrl,
             mood: 'soft',
             timestamp: 'Just now',
             provider: p.provider,
-            embedUrl: p.embedUrl,
+            embedUrl: firstTrack?.youtubeTrackId
+              ? `https://www.youtube-nocookie.com/embed/${firstTrack.youtubeTrackId}?autoplay=1&enablejsapi=1`
+              : p.embedUrl,
+            youtubeTrackId: firstTrack?.youtubeTrackId || p.youtubeTrackId,
+            youtubePlaylistId: p.youtubePlaylistId,
+            ytMusicUrl: firstTrack?.ytMusicUrl || p.ytMusicUrl,
+            color: p.color
           });
         }}
       />

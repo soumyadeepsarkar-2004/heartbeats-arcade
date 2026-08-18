@@ -1,110 +1,85 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
+import { useState, useCallback, useRef } from 'react';
 import type { StageTrack, RoomEntry } from '../types';
+import type { YouTubePlayerRef } from '../components/audio/YouTubeAudioPlayer';
 
 export function useAudioEngine() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeMode, setActiveMode] = useState<'story' | 'room'>('story');
   const [currentTrackTitle, setCurrentTrackTitle] = useState('Pehle Bhi Main');
   const [currentArtist, setCurrentArtist] = useState('Vishal Mishra');
-  const [embedUrl, setEmbedUrl] = useState('https://www.youtube.com/embed/vFh_63d91n8?autoplay=1&enablejsapi=1&playsinline=1');
-  const [progress, setProgress] = useState(15);
-  const [currentTimeSec, setCurrentTimeSec] = useState(24);
-  const [totalDurationSec, setTotalDurationSec] = useState(262);
+  const [currentTrackColor, setCurrentTrackColor] = useState('#FF7A59');
+  const [videoId, setVideoId] = useState<string | undefined>('9cHq63r1vHQ');
+  const [playlistId, setPlaylistId] = useState<string | undefined>(undefined);
+  const [ytMusicUrl, setYtMusicUrl] = useState<string | undefined>('https://music.youtube.com/watch?v=9cHq63r1vHQ&list=PLUc_Kv5jDS44');
+  const [progress, setProgress] = useState(0);
+  const [currentTimeSec, setCurrentTimeSec] = useState(0);
+  const [totalDurationSec, setTotalDurationSec] = useState(251);
+  const [showMiniPlayer, setShowMiniPlayer] = useState(false);
 
-  const audioCtxRef = useRef<AudioContext | null>(null);
-  const synthIntervalRef = useRef<number | null>(null);
-
-  // Native Web Audio API Synthesizer Fallback Engine
-  const startSynthHarmonies = useCallback(() => {
-    try {
-      if (!audioCtxRef.current) {
-        const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
-        audioCtxRef.current = new AudioCtx();
-      }
-      if (audioCtxRef.current.state === 'suspended') {
-        audioCtxRef.current.resume();
-      }
-
-      if (synthIntervalRef.current) clearInterval(synthIntervalRef.current);
-
-      const notes = [261.63, 329.63, 392.00, 493.88, 523.25]; // C4, E4, G4, B4, C5 romantic chord notes
-      let noteIdx = 0;
-
-      synthIntervalRef.current = window.setInterval(() => {
-        if (!audioCtxRef.current || audioCtxRef.current.state !== 'running') return;
-        
-        const osc = audioCtxRef.current.createOscillator();
-        const gain = audioCtxRef.current.createGain();
-
-        osc.type = 'sine';
-        osc.frequency.setValueAtTime(notes[noteIdx % notes.length], audioCtxRef.current.currentTime);
-        
-        gain.gain.setValueAtTime(0.05, audioCtxRef.current.currentTime);
-        gain.gain.exponentialRampToValueAtTime(0.001, audioCtxRef.current.currentTime + 1.2);
-
-        osc.connect(gain);
-        gain.connect(audioCtxRef.current.destination);
-
-        osc.start();
-        osc.stop(audioCtxRef.current.currentTime + 1.2);
-
-        noteIdx++;
-      }, 1600);
-    } catch {
-      // Gracefully ignore audio context restriction if blocked
-    }
-  }, []);
-
-  const stopSynthHarmonies = useCallback(() => {
-    if (synthIntervalRef.current) {
-      clearInterval(synthIntervalRef.current);
-      synthIntervalRef.current = null;
-    }
-  }, []);
+  const playerRef = useRef<YouTubePlayerRef | null>(null);
 
   // Play a specific stage track (Story Map)
   const playStageTrack = useCallback((stage: StageTrack) => {
     setActiveMode('story');
     setCurrentTrackTitle(stage.song);
     setCurrentArtist(stage.artist);
-    setTotalDurationSec(stage.duration);
+    setCurrentTrackColor(stage.color || '#FF7A59');
+    setTotalDurationSec(stage.duration || 240);
     setCurrentTimeSec(0);
     setProgress(0);
     
-    if (stage.youtubeUrl) {
-      setEmbedUrl(`${stage.youtubeUrl}&playsinline=1`);
-    }
+    setVideoId(stage.youtubeTrackId || '9cHq63r1vHQ');
+    setPlaylistId(stage.youtubePlaylistId);
+    setYtMusicUrl(stage.ytMusicUrl || `https://music.youtube.com/watch?v=${stage.youtubeTrackId}`);
+    
     setIsPlaying(true);
-    startSynthHarmonies();
-  }, [startSynthHarmonies]);
+  }, []);
 
   // Play a room playlist entry (Shared Room)
   const playRoomEntry = useCallback((entry: RoomEntry) => {
     setActiveMode('room');
     setCurrentTrackTitle(entry.title);
-    setCurrentArtist(`Shared by ${entry.addedBy}`);
+    setCurrentArtist(entry.artist || `Shared by ${entry.addedBy}`);
+    setCurrentTrackColor(entry.color || '#C8FF4F');
     setTotalDurationSec(210);
     setCurrentTimeSec(0);
     setProgress(0);
     
-    if (entry.embedUrl) {
-      setEmbedUrl(entry.embedUrl);
-    }
+    setVideoId(entry.youtubeTrackId);
+    setPlaylistId(entry.youtubePlaylistId);
+    setYtMusicUrl(entry.ytMusicUrl || (entry.youtubeTrackId ? `https://music.youtube.com/watch?v=${entry.youtubeTrackId}` : undefined));
+    
     setIsPlaying(true);
-    startSynthHarmonies();
-  }, [startSynthHarmonies]);
+  }, []);
 
   const togglePlay = useCallback(() => {
     setIsPlaying(prev => {
       const nextState = !prev;
       if (nextState) {
-        startSynthHarmonies();
+        playerRef.current?.play();
       } else {
-        stopSynthHarmonies();
+        playerRef.current?.pause();
       }
       return nextState;
     });
-  }, [startSynthHarmonies, stopSynthHarmonies]);
+  }, []);
+
+  // Handle Real-time position update from YouTube Player API
+  const handleProgressSync = useCallback((currSec: number, durSec: number) => {
+    if (durSec > 0) {
+      setTotalDurationSec(Math.round(durSec));
+      setCurrentTimeSec(Math.round(currSec));
+      setProgress(Math.round((currSec / durSec) * 100));
+    }
+  }, []);
+
+  // Handle Seek from UI Range Slider
+  const seekProgress = useCallback((newProgress: number) => {
+    setProgress(newProgress);
+    const targetSec = Math.round((newProgress / 100) * totalDurationSec);
+    setCurrentTimeSec(targetSec);
+    playerRef.current?.seekTo(targetSec);
+  }, [totalDurationSec]);
 
   // Section-Isolated Next Track Logic
   const nextTrack = useCallback((stages: StageTrack[], currentStageId: string, roomEntries: RoomEntry[]) => {
@@ -140,45 +115,34 @@ export function useAudioEngine() {
     }
   }, [activeMode, currentTrackTitle, playStageTrack, playRoomEntry]);
 
-  // Progress simulation for audio timer
-  useEffect(() => {
-    if (!isPlaying) {
-      stopSynthHarmonies();
-      return;
-    }
-    const interval = setInterval(() => {
-      setCurrentTimeSec(prev => {
-        const nextTime = prev + 1;
-        if (nextTime >= totalDurationSec) {
-          return 0;
-        }
-        setProgress(Math.round((nextTime / totalDurationSec) * 100));
-        return nextTime;
-      });
-    }, 1000);
-    return () => clearInterval(interval);
-  }, [isPlaying, totalDurationSec, stopSynthHarmonies]);
-
-  const seekProgress = useCallback((newProgress: number) => {
-    setProgress(newProgress);
-    setCurrentTimeSec(Math.round((newProgress / 100) * totalDurationSec));
-  }, [totalDurationSec]);
+  const toggleMiniPlayer = useCallback(() => {
+    setShowMiniPlayer(prev => !prev);
+  }, []);
 
   return {
     isPlaying,
     activeMode,
     currentTrackTitle,
     currentArtist,
-    embedUrl,
+    currentTrackColor,
+    videoId,
+    playlistId,
+    ytMusicUrl,
     progress,
     currentTimeSec,
     totalDurationSec,
+    showMiniPlayer,
+    playerRef,
+    setIsPlaying,
+    setCurrentTimeSec,
     playStageTrack,
     playRoomEntry,
     togglePlay,
     setActiveMode,
     nextTrack,
     prevTrack,
-    seekProgress
+    seekProgress,
+    handleProgressSync,
+    toggleMiniPlayer
   };
 }

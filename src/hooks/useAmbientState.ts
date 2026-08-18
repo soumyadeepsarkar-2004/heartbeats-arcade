@@ -10,19 +10,8 @@ export function useAmbientState() {
   // Modal Visibility State
   const [activeModal, setActiveModal] = useState<'map' | 'game' | 'win' | 'room' | null>(null);
 
-  // Room State
-  const [roomEntries, setRoomEntries] = useState<RoomEntry[]>([
-    {
-      id: 'r-1',
-      title: 'Indie India',
-      addedBy: 'Person 1',
-      url: 'https://open.spotify.com/playlist/37i9dQZF1DX5q67ZpWyRrZ',
-      mood: 'soft',
-      timestamp: 'Today',
-      provider: 'Spotify',
-      embedUrl: 'https://open.spotify.com/embed/playlist/37i9dQZF1DX5q67ZpWyRrZ?utm_source=generator&theme=0',
-    }
-  ]);
+  // Initial Shared Room Diary Entries (Empty by default - filled as users select or paste links!)
+  const [roomEntries, setRoomEntries] = useState<RoomEntry[]>([]);
   const [selectedRoomPlaylist, setSelectedRoomPlaylist] = useState(STARTER_PLAYLISTS[0]);
 
   const activeStage = stages.find(s => s.id === activeStageId) || stages[0];
