@@ -99,7 +99,6 @@ export function App() {
 
   const handleCompleteStage = () => {
     completeStage();
-    playStageTrack(activeStage);
   };
 
   const handleNextLevel = () => {
@@ -208,6 +207,7 @@ export function App() {
       <GameModal 
         isOpen={activeModal === 'game'}
         stage={activeStage}
+        currentTrackTitle={currentTrackTitle}
         selectedChoice={selectedChoice}
         onClose={() => setActiveModal(null)}
         onSelectChoice={setSelectedChoice}

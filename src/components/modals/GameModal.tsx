@@ -4,6 +4,7 @@ import type { StageTrack } from '../../types';
 interface GameModalProps {
   isOpen: boolean;
   stage: StageTrack;
+  currentTrackTitle: string;
   selectedChoice: number | null;
   onClose: () => void;
   onSelectChoice: (idx: number) => void;
@@ -14,18 +15,20 @@ interface GameModalProps {
 export function GameModal({
   isOpen,
   stage,
+  currentTrackTitle,
   selectedChoice,
   onClose,
   onSelectChoice,
   onComplete,
   onPlaySong
 }: GameModalProps) {
-  // Automatically trigger dedicated stage soundtrack playback when entering a stage or moving to next chapter
+  // Automatically trigger stage soundtrack playback only when entering a new stage,
+  // allowing music to play continuously through quizzes without restarting.
   useEffect(() => {
-    if (isOpen && stage) {
+    if (isOpen && stage && currentTrackTitle !== stage.song) {
       onPlaySong(stage);
     }
-  }, [isOpen, stage, onPlaySong]);
+  }, [isOpen, stage, currentTrackTitle, onPlaySong]);
 
   if (!isOpen) return null;
 
