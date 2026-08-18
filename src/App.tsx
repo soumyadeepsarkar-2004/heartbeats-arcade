@@ -104,7 +104,7 @@ export function App() {
   const handleNextLevel = () => {
     const idx = stages.findIndex(s => s.id === activeStage.id);
     const nextIdx = idx + 1;
-    if (nextIdx < stages.length && stages[nextIdx].isUnlocked) {
+    if (nextIdx < stages.length) {
       const nextStage = stages[nextIdx];
       openNextStage();
       playStageTrack(nextStage);

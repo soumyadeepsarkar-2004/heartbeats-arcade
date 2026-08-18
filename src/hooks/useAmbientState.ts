@@ -41,7 +41,7 @@ export function useAmbientState() {
   const openNextStage = useCallback(() => {
     const idx = stages.findIndex(s => s.id === activeStageId);
     const nextIdx = idx + 1;
-    if (nextIdx < stages.length && stages[nextIdx].isUnlocked) {
+    if (nextIdx < stages.length) {
       setActiveStageId(stages[nextIdx].id);
       setSelectedChoice(null);
       setActiveModal('game');
