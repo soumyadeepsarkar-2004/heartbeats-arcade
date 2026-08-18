@@ -10,7 +10,7 @@ export function useAmbientState() {
   // Modal Visibility State
   const [activeModal, setActiveModal] = useState<'map' | 'game' | 'win' | 'room' | null>(null);
 
-  // Initial Shared Room Diary Entries (Empty by default - filled as users select or paste links!)
+  // Initial Shared Room Diary Entries (Empty by default)
   const [roomEntries, setRoomEntries] = useState<RoomEntry[]>([]);
   const [selectedRoomPlaylist, setSelectedRoomPlaylist] = useState(STARTER_PLAYLISTS[0]);
 
@@ -42,7 +42,9 @@ export function useAmbientState() {
     const idx = stages.findIndex(s => s.id === activeStageId);
     const nextIdx = idx + 1;
     if (nextIdx < stages.length) {
-      setActiveStageId(stages[nextIdx].id);
+      const nextId = stages[nextIdx].id;
+      setStages(prev => prev.map((s, i) => i === nextIdx ? { ...s, isUnlocked: true } : s));
+      setActiveStageId(nextId);
       setSelectedChoice(null);
       setActiveModal('game');
     } else {
