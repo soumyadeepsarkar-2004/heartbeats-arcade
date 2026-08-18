@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { Clock } from 'lucide-react';
 
 interface TopbarProps {
   heartCount: number;
@@ -32,7 +31,7 @@ export function Topbar({
       {/* Left: Clock & Heart Count Badge */}
       <div className="pointer-events-auto flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-surface/80 border border-white/10 backdrop-blur-md text-xs font-mono tracking-wider text-muted shadow-lg">
         <span className="w-2 h-2 rounded-full bg-lime animate-pulse mr-0.5" />
-        <Clock className="w-3.5 h-3.5 text-white/70 inline-block" />
+        <span className="text-[#C8FF4F] font-bold font-mono tracking-tighter text-xs">»»»</span>
         <span className="text-white/90">{timeStr}</span>
         <span className="text-white/20 px-0.5">/</span>
         <span className="text-white font-semibold">{heartCount}</span>
